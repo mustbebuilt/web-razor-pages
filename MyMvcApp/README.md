@@ -56,18 +56,18 @@ The default project structure is centered around MVC separation of concerns:
 
 The main folders are:
 
-####Models####
+#### Models ####
 Models hold the business logic. Models to represent the data used in the application will be created here. In this simple application we won't make use of the Model.
 
-####Views####
+#### Views ####
 The Views that contain the HTML and other content. By default file _ViewStart.cshtml links to the _Layout.cshtml where the default Bootstrap HTML/CSS is set.
 
 As a developer you can choose to make more folders inside Views to help structure your content.
 
-####Controllers####
+#### Controllers ####
 Communicates between the View and Model. MVC uses a 'separation of concerns' approach to development. The controller controls which views are displayed and whether they need the support of the Model (not all pages will).
 
-####wwwroot####
+#### wwwroot ####
 Location of all 'static' files such as client side Javascript, images and CSS files. May also include HTML files that don't require any .net server side logic
 
 These folder roles support MVC separation of concerns:

@@ -185,6 +185,58 @@ Checked and confirmed in current source:
 3. `Program.cs` uses endpoint-based static asset mapping
 4. Routing pattern is `{controller=Home}/{action=Index}/{id?}`
 
+### Step 2.7 Adding Navigation Links in MVC vs Standard HTML
+
+In ASP.NET Core MVC, navigation links are typically added using Razor Tag Helpers, which generate URLs based on your routing configuration. This is different from standard HTML links, which use static `href` attributes.
+
+MVC Tag Helper link example:
+
+```cshtml
+<a asp-controller="Home" asp-action="Index">Home</a>
+```
+
+- `asp-controller` and `asp-action` are processed by MVC to generate the URL.
+- If your routing changes, generated links remain accurate without manual path updates.
+
+Standard HTML link example:
+
+```html
+<a href="/Home/Index">Home</a>
+```
+
+- This is a hardcoded path and must be changed manually if routes are updated.
+
+Basic layout with navigation links (`Views/Shared/_Layout.cshtml`):
+
+```cshtml
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"]</title>
+</head>
+<body>
+	<nav>
+		<ul>
+			<li><a asp-controller="Home" asp-action="Index">Home</a></li>
+			<li><a asp-controller="Home" asp-action="Privacy">Privacy</a></li>
+		</ul>
+	</nav>
+
+	@RenderBody()
+
+	<footer>
+		<p>&copy; 2024 My Application</p>
+	</footer>
+</body>
+</html>
+```
+
+Recommendation:
+
+- Prefer Tag Helpers for internal MVC navigation to keep links aligned with route configuration.
+
 ## 3. Views, Controllers, and Routing
 
 ### Step 3.1 Explore default controller actions
@@ -408,6 +460,51 @@ Formatting tip:
 - Keep data extraction close to the top of the view, and keep rendering markup below it.
 - This makes views easier to scan and maintain.
 
+### Step 5.3 Render C# expressions in views
+
+Razor allows you to embed C# expressions directly in HTML using the `@` symbol. This is useful for displaying dynamic data, calling methods, and evaluating conditions.
+
+Common Razor syntax:
+
+- `@variable` – outputs the value of a variable
+- `@expression` – evaluates a C# expression and outputs the result
+- `@{ ... }` – code block for multiple C# statements
+- `@if (condition) { ... }` – conditional rendering
+
+Footer copyright year example (`Views/Shared/_Layout.cshtml`):
+
+```cshtml
+<footer>
+    <p>&copy; @DateTime.Now.Year - My Application</p>
+</footer>
+```
+
+What this does:
+
+- `@DateTime.Now.Year` evaluates the current year at runtime.
+- The footer automatically displays the correct copyright year without manual updates.
+
+More detailed example with formatting:
+
+```cshtml
+<footer>
+    <p>Page generated on @DateTime.Now.ToString("ddd d MMM yyyy")</p>
+    <p>&copy; @DateTime.Now.Year My Application. All rights reserved.</p>
+</footer>
+```
+
+This example demonstrates:
+
+- Using `DateTime.Now` to get the current date and time.
+- Using `ToString()` with a format string to display the date in a readable format (e.g., "Mon 20 May 2026").
+- Using `@DateTime.Now.Year` to extract just the year for copyright notices.
+
+Benefits of rendering C# in views:
+
+- Dynamic content is calculated at page render time, so it's always current.
+- No need to hard-code dates, years, or other values that change.
+- Keeps UI logic where it belongs (in the view) while separating data fetching logic from the controller.
+
 ## 6. Layout, Styling, and Mobile Navigation
 
 ### Step 6.1 Replace template styling with custom CSS
@@ -486,31 +583,6 @@ Use this layout code to add the burger button, menu links, and script/CSS wiring
 </body>
 </html>
 ```
-
-### Step 6.3a Adding Navigation Links in MVC vs Standard HTML
-
-In ASP.NET Core MVC, navigation links are typically added using Razor Tag Helpers, which generate URLs based on your routing configuration. This is different from standard HTML links, which use static `href` attributes.
-
-MVC Tag Helper link example:
-
-```cshtml
-<a asp-controller="Home" asp-action="Index">Home</a>
-```
-
-- `asp-controller` and `asp-action` are processed by MVC to generate the URL.
-- If your routing changes, generated links remain accurate without manual path updates.
-
-Standard HTML link example:
-
-```html
-<a href="/Home/Index">Home</a>
-```
-
-- This is a hardcoded path and must be changed manually if routes are updated.
-
-Recommendation:
-
-- Prefer Tag Helpers for internal MVC navigation to keep links aligned with route configuration.
 
 ### Step 6.4 JavaScript burger menu explanation
 

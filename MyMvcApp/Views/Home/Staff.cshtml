@@ -1,0 +1,36 @@
+@using System.Text.Json
+@{
+    ViewData["Title"] = "Staff";
+
+    var staffJson = ViewData["StaffJson"] as string ?? "[]";
+    var staffItems = JsonDocument.Parse(staffJson).RootElement.EnumerateArray().ToList();
+}
+
+<h1>Staff</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Department</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var staff in staffItems)
+        {
+            <tr>
+                <td>@staff.GetProperty("Id")</td>
+                <td>@staff.GetProperty("Name")</td>
+                <td>@staff.GetProperty("Role")</td>
+                <td>@staff.GetProperty("Department")</td>
+                <td>@staff.GetProperty("Email")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2>Raw JSON</h2>
+<pre>@staffJson</pre>

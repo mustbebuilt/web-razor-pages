@@ -1,20 +1,28 @@
 # MyMvcApp
 
-This README is organized as a step-by-step walkthrough, following the same learning progression as:
-- MVC file structure and middleware
-- MVC views, controllers, and routing
-- Razor views and formatting
-- moving data from controllers to views
+This quick start guide will set up a web application using the .net MVC template. The aim of this quick start guide is to:
+
+ - Create and Configure a basic application from the starter project provided.
+ - Review the Structure of the Model-View-Controller Application.
+ - Edit the View and remove the Bootstrap framework to use a more basic HTML set up.
+ - Add additional static pages to the wwwroot folder.
+ - Add additional dynamic pages via the View-Controller.
+ - Pass Data from the Controller to the View.
 
 ## 1. Project Creation and First Run
 
 ### Step 1.1 Create the app
 
+To create a starter project in Visual Studio Code open your terminal and run:
+
 ```bash
 dotnet new mvc -n MyMvcApp
 ```
+This will build a basic MVC application in the folder `MyMvcApp`.
 
 ### Step 1.2 Move into the app folder
+
+Move into the application folder with the command:
 
 ```bash
 cd MyMvcApp
@@ -29,19 +37,38 @@ dotnet run
 
 At this point, the app is the default ASP.NET Core MVC template.
 
+Test the application with:
+
+```bash
+dotnet build
+dotnet run
+```
+
 Quick-start notes:
 - The app runs on localhost for development.
-- Stop the running app before making large structure changes, then run again.
+- Stop the running app before making large structure changes, then run again.  To stop the application use `Ctrl-C`
 
 ## 2. MVC File Structure and Middleware
 
 ### Step 2.1 Understand the main folders
 
 The default project structure is centered around MVC separation of concerns:
-- `Controllers`: receives requests and returns responses
-- `Models`: data and business logic types
-- `Views`: Razor UI templates
-- `wwwroot`: static assets (CSS, JavaScript, images)
+
+The main folders are:
+
+####Models####
+Models hold the business logic. Models to represent the data used in the application will be created here. In this simple application we won't make use of the Model.
+
+####Views####
+The Views that contain the HTML and other content. By default file _ViewStart.cshtml links to the _Layout.cshtml where the default Bootstrap HTML/CSS is set.
+
+As a developer you can choose to make more folders inside Views to help structure your content.
+
+####Controllers####
+Communicates between the View and Model. MVC uses a 'separation of concerns' approach to development. The controller controls which views are displayed and whether they need the support of the Model (not all pages will).
+
+####wwwroot####
+Location of all 'static' files such as client side Javascript, images and CSS files. May also include HTML files that don't require any .net server side logic
 
 These folder roles support MVC separation of concerns:
 - Controllers decide what response to return
@@ -54,6 +81,15 @@ These folder roles support MVC separation of concerns:
 - `appsettings.json`: application settings and environment config
 - `Views/_ViewStart.cshtml`: sets the default layout (`_Layout`)
 - `Views/_ViewImports.cshtml`: imports namespaces and Tag Helpers used by Razor views
+
+Why these files matter in practice:
+
+- `Program.cs` is the first place to check when routes do not resolve, middleware behaves unexpectedly, or static assets are not loading.
+- `appsettings.json` allows you to keep environment-specific values out of source code and change behavior without editing controllers/views.
+- `_ViewStart.cshtml` helps avoid repeating layout declarations in every view.
+- `_ViewImports.cshtml` makes Razor syntax cleaner by centralizing imports and enabling MVC Tag Helpers globally.
+
+As you work through the project, these files become your "startup checklist" whenever the app runs but page behavior is not what you expect.
 
 ### Step 2.3 Middleware and routing pipeline
 
@@ -69,6 +105,15 @@ In this project, `Program.cs` configures:
 
 This enables URLs like `/Home/Index` and `/Home/Privacy` to map to controller actions and views.
 
+How to think about this flow:
+
+- A browser request enters the middleware pipeline in order.
+- Routing middleware (`UseRouting`) matches the URL against route patterns.
+- Endpoint mapping (`MapControllerRoute`) connects a match to the correct controller action.
+- The action returns a view, and Razor renders the final HTML response.
+
+If one middleware step is missing or out of order, the request may fail before it reaches your controller.
+
 Important middleware note:
 - Order matters. Routing and endpoint mapping must be configured in the correct sequence for requests to resolve correctly.
 
@@ -81,6 +126,16 @@ Accuracy note for modern templates:
 The project uses two content paths:
 - Static content from `wwwroot` (CSS, JS, images)
 - Dynamic content from Controller + View (for example Home, Privacy, News, Staff)
+
+Rule of thumb:
+
+- Use `wwwroot` when the file is served directly as-is.
+- Use Controller + View when server-side logic decides what should be rendered.
+
+Examples:
+
+- `wwwroot/css/site.css` is sent as a plain file.
+- `HomeController.Staff()` prepares data, and `Views/Home/Staff.cshtml` renders it.
 
 ### Step 2.5 Remove MVC starter template UI code
 
@@ -117,6 +172,11 @@ Why this step is useful:
 - Makes the page structure easier to learn in an MVC beginner flow
 - Keeps focus on Controller -> View behavior instead of framework utility classes
 
+Practical benefit for beginners:
+
+- By reducing starter-template complexity first, each new feature (routes, data binding, responsive nav) is easier to isolate and understand.
+- Troubleshooting becomes simpler because fewer moving parts are involved.
+
 ### Step 2.6 Verify file-structure accuracy against this project
 
 Checked and confirmed in current source:
@@ -135,15 +195,59 @@ The starter `HomeController` includes actions for:
 
 Each action returns `View()`, which maps to matching Razor files in `Views/Home`.
 
+How this convention works:
+
+- Action method name `Index()` maps to `Views/Home/Index.cshtml`.
+- Action method name `Privacy()` maps to `Views/Home/Privacy.cshtml`.
+
+This convention-based mapping reduces boilerplate and keeps controllers readable.
+
 ### Step 3.2 Add a custom route and view (`News`)
 
-What was added:
-1. `News()` action in `HomeController`
-2. `Views/Home/News.cshtml`
-3. Navigation link in `Views/Shared/_Layout.cshtml`
+To better understand the MVC set we'll add a new page News.  This will mean we need to:
+
+1. Add a `News()` action in `HomeController`
+2. Create a view at `Views/Home/News.cshtml`
+3. Add a new navigation link in `Views/Shared/_Layout.cshtml`
+
+Controller update (`Controllers/HomeController.cs`):
+
+```csharp
+public IActionResult News()
+{
+	return View();
+}
+```
+
+View file (`Views/Home/News.cshtml`):
+
+```cshtml
+@{
+	ViewData["Title"] = "News";
+}
+
+<h1>News</h1>
+```
+
+Next add the link to the layout with:
+
+```cshtml
+<li><a asp-controller="Home" asp-action="News">News</a></li>
+```
+
+How this works:
+
+- The `News()` action responds to `/Home/News`.
+- `return View();` tells MVC to render the view that matches the action name.
+- MVC convention maps this to `Views/Home/News.cshtml` automatically.
 
 Result:
 - URL `/Home/News` resolves to the new action and view.
+
+Learning goal for this step:
+
+- Understand that adding a new page in MVC is usually a two-part change: controller action + matching view.
+- Once the route pattern is in place, MVC wires the URL to your action using naming conventions.
 
 ### Step 3.3 Add JSON-backed `Staff` action and view
 
@@ -155,8 +259,92 @@ What was added:
 5. New Razor view at `Views/Home/Staff.cshtml`
 6. Navigation link in layout
 
+Controller update (`Controllers/HomeController.cs`):
+
+```csharp
+public IActionResult Staff()
+{
+	var staff = new[]
+	{
+		new { Id = 1, Name = "Alice Johnson", Role = "Engineering Manager", Department = "Engineering", Email = "alice.johnson@company.com" },
+		new { Id = 2, Name = "Brian Lee", Role = "Senior Developer", Department = "Engineering", Email = "brian.lee@company.com" },
+		new { Id = 3, Name = "Carla Gomez", Role = "HR Specialist", Department = "Human Resources", Email = "carla.gomez@company.com" }
+	};
+
+	ViewData["StaffJson"] = JsonSerializer.Serialize(staff);
+	return View();
+}
+```
+
+What this controller code does:
+
+- Builds a small in-memory list of staff records.
+- Converts that list to JSON using `System.Text.Json`.
+- Stores the JSON text in `ViewData["StaffJson"]` so the view can read it.
+
+View file (`Views/Home/Staff.cshtml`):
+
+```cshtml
+@using System.Text.Json
+@{
+	ViewData["Title"] = "Staff";
+
+	var staffJson = ViewData["StaffJson"] as string ?? "[]";
+	var staffItems = JsonDocument.Parse(staffJson).RootElement.EnumerateArray().ToList();
+}
+
+<h1>Staff</h1>
+
+<table>
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>Name</th>
+			<th>Role</th>
+			<th>Department</th>
+			<th>Email</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var staff in staffItems)
+		{
+			<tr>
+				<td>@staff.GetProperty("Id")</td>
+				<td>@staff.GetProperty("Name")</td>
+				<td>@staff.GetProperty("Role")</td>
+				<td>@staff.GetProperty("Department")</td>
+				<td>@staff.GetProperty("Email")</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+<h2>Raw JSON</h2>
+<pre>@staffJson</pre>
+```
+
+What this view code does:
+
+- Reads the JSON string from `ViewData`.
+- Parses JSON into an array and loops through each item.
+- Renders each staff member in a table row.
+- Shows the raw JSON at the bottom for learning/debugging.
+
+Layout navigation link (`Views/Shared/_Layout.cshtml`):
+
+```cshtml
+<li><a asp-controller="Home" asp-action="Staff">Staff</a></li>
+```
+
+This link adds `/Home/Staff` to your site navigation.
+
 Result:
 - URL `/Home/Staff` resolves and displays staff data sourced from controller JSON.
+
+Why use JSON in this learning example:
+
+- It demonstrates a realistic server-to-view data format often used in APIs.
+- It helps show where serialization belongs (controller) versus where rendering belongs (view).
 
 ## 4. Moving Data from Controller to View
 
@@ -168,6 +356,14 @@ MVC commonly passes server data to views using:
 3. strongly typed models for larger, structured data
 
 In this project, the Staff page uses `ViewData`.
+
+When to choose each option:
+
+- `ViewBag`: useful for very small, quick values.
+- `ViewData`: useful when you want explicit key/value lookup.
+- Strongly typed model: preferred for larger pages and compile-time safety.
+
+For production projects, strongly typed models are usually the long-term direction.
 
 ### Step 4.2 How Staff data is passed
 
@@ -183,6 +379,8 @@ Why this matters:
 - Keeps data preparation in the controller
 - Keeps rendering concerns in the view
 
+This is a good foundation before moving to typed view models, where the same separation principle still applies.
+
 ## 5. Razor Views and Formatting
 
 ### Step 5.1 Use Razor expressions and code blocks
@@ -193,6 +391,10 @@ In the `Staff` view, Razor is used to:
 3. Loop through items with `@foreach`
 4. Render table rows and cells from parsed values
 
+Razor benefit:
+
+- You can keep HTML readable while embedding only the minimum server-side logic needed for rendering.
+
 ### Step 5.2 Format controller data in HTML
 
 The `Staff` view renders:
@@ -200,6 +402,11 @@ The `Staff` view renders:
 - a raw JSON preview inside `<pre>`
 
 This demonstrates a full flow from controller-generated JSON to rendered view output.
+
+Formatting tip:
+
+- Keep data extraction close to the top of the view, and keep rendering markup below it.
+- This makes views easier to scan and maintain.
 
 ## 6. Layout, Styling, and Mobile Navigation
 
@@ -211,6 +418,11 @@ Updates made in `wwwroot/css/site.css`:
 - nav, content, table, and footer styles
 
 This section follows the earlier template cleanup step, where bootstrap-based starter styling was removed in favor of plain project CSS.
+
+Why this helps learning:
+
+- You can see exactly which CSS rules affect each element.
+- It avoids framework class dependencies while building confidence with core HTML/CSS.
 
 ### Step 6.2 Add a mobile-first burger menu
 
@@ -225,6 +437,11 @@ JavaScript updates in `wwwroot/js/site.js`:
 - update `aria-expanded`
 - close menu on mobile link click
 - reset menu state on desktop resize
+
+Accessibility note:
+
+- The `aria-controls` and `aria-expanded` attributes communicate menu state to assistive technologies.
+- Keeping these in sync in JavaScript is an important part of accessible navigation.
 
 ### Step 6.3 Add the burger menu code to `Views/Shared/_Layout.cshtml`
 
@@ -269,6 +486,31 @@ Use this layout code to add the burger button, menu links, and script/CSS wiring
 </body>
 </html>
 ```
+
+### Step 6.3a Adding Navigation Links in MVC vs Standard HTML
+
+In ASP.NET Core MVC, navigation links are typically added using Razor Tag Helpers, which generate URLs based on your routing configuration. This is different from standard HTML links, which use static `href` attributes.
+
+MVC Tag Helper link example:
+
+```cshtml
+<a asp-controller="Home" asp-action="Index">Home</a>
+```
+
+- `asp-controller` and `asp-action` are processed by MVC to generate the URL.
+- If your routing changes, generated links remain accurate without manual path updates.
+
+Standard HTML link example:
+
+```html
+<a href="/Home/Index">Home</a>
+```
+
+- This is a hardcoded path and must be changed manually if routes are updated.
+
+Recommendation:
+
+- Prefer Tag Helpers for internal MVC navigation to keep links aligned with route configuration.
 
 ### Step 6.4 JavaScript burger menu explanation
 

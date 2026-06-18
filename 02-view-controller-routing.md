@@ -72,6 +72,7 @@ The pattern values dictates how a HTTP request is routed by looking for a contro
 Lets put this in table format:
 
 |URL Called|Contoller Called|Action / Method Called|View Used|
+|----|----|----|----|
 |localhost:5001/Home/Privacy|Controllers/HomeController.cs|Privacy()|	Views/Home/Privacy|
 |localhost:5001/Home/Index|Controllers/HomeController.cs|Index()|	Views/Home/Index|
 

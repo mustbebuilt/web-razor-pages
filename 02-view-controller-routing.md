@@ -76,19 +76,23 @@ Lets put this in table format:
 |localhost:5001/Home/Privacy|Controllers/HomeController.cs|Privacy()|	Views/Home/Privacy|
 |localhost:5001/Home/Index|Controllers/HomeController.cs|Index()|	Views/Home/Index|
 
-Naming conventions are important here. The HomeController will look for views in Views/Home
+Naming conventions are important here. The `HomeController` will look for views in `Views/Home`.
 
-Note there are default values. The starter template set up Home as the default controller and Index as the default action. Therefore the home page can be called various ways:
+> [!NOTE]
+> There are default values. The starter template set up Home as the default controller and Index as the default action. Therefore the home page can be called various ways:
 
-URL Called	Contoller Called	Action / Method Called	View Used
-localhost:5001/Home/Index	Controllers/HomeController.cs	Index()	Views/Home/Index
-localhost:5001/Home/	Controllers/HomeController.cs	Index()	Views/Home/Index
-localhost:5001/	Controllers/HomeController.cs	Index()	Views/Home/Index
-Experiment with Controllers and Views
+| URL Called | Contoller Called | Action / Method Called | View Used |
+| ---------- | ---------------- | ---------------------- | --------- |
+||localhost:5001/Home/Index|	Controllers/HomeController.cs	|Index()	Views/Home/Index\
+localhost:5001/Home/|	Controllers/HomeController.cs	Index()	Views/Home/Index|
+|localhost:5001/|	Controllers/HomeController.cs|	Index()|	Views/Home/Index|
+
+## Experiment with Controllers and Views
+
 Creating a new Route for the Home Controller
-Create a new method in the Controllers/HomeController for a view called News.
+Create a new method in the `Controllers/HomeController` for a view called `News`.
 
-Controllers/HomeController.cs
+``` c#
 public IActionResult News()
 
         {
@@ -96,24 +100,25 @@ public IActionResult News()
             return View();
 
         }
-
+```
 		
-You will need to create a new view called News.
+You will need to create a new view at `Views/Home/News.cshtml`.
 
-Views/Home/News.cshtml
+```razor
 @{
     ViewData["Title"] = "News";
 }
 <h1>News</h1>
-		
+```
+
 This can be viewed at https://localhost:5001/Home/News
 
-Creating a new Controller with its own routes
+## Creating a new Controller with its own routes
 As demonstrated above many views can be controlled by the same Controller file. However, as your application expands you may choose to create multiple controllers that create views within another route.
 
-Create a new Controller called Controllers/NewsController.
+Create a new Controller called `Controllers/NewsController`.
 
-Controllers/NewsController.cs
+``` c#
 using Microsoft.AspNetCore.Mvc;
 
 namespace MyApp.Controllers
@@ -127,28 +132,34 @@ namespace MyApp.Controllers
         }
     }
 }
+```
 					
 If you test the above by attempting to visit https://localhost:5001/News/ then an error is thrown.
 
-Missing View File
-To fix this error create view file at Views/News/Index.cshtml.
+## Missing View File
 
+To fix this error create view file at `Views/News/Index.cshtml`.
+
+``` razor
 Views/News/Index.cshtml
 @{
     ViewData["Title"] = "News";
 }
 <h1>News Page from the NewsController</h1>
+```
 		
-Try creating another view for the Controllers/NewsController
+Try creating another view for the `Controllers/NewsController`
 
-Using the Ok Method with Controllers
-Actions can be tested without Views using the Ok method. Try adding an action of:
+## Using the Ok Method with Controllers
 
-Controllers/HomeController.cs
+Actions can be tested without Views using the Ok method. Amend `Controllers/HomeController.cs` with an action of:
+
+``` c#
 public IActionResult ActionTest()
         {
             return Ok("Just a Test");
         }
+```
 
 This can be tested with https://localhost:44354/Home/ActionTest.
 

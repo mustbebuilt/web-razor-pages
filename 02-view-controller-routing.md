@@ -17,7 +17,6 @@ The `Views/Home/Index.cshtml` contains some HTML and some `c#` code. The `c#` co
 The default MVC set up creates a `Controllers/HomeController` file. This files 'controls' both the Index and Privacy views through two methods with names that match the views.
 
 ```c#
-Controllers/HomeController.cs
 public IActionResult Index()
 
         {
@@ -72,7 +71,7 @@ The pattern values dictates how a HTTP request is routed by looking for a contro
 
 Lets put this in table format:
 
----URL Called|Contoller Called|Action / Method Called|View Used|
+|URL Called|Contoller Called|Action / Method Called|View Used|
 |localhost:5001/Home/Privacy|Controllers/HomeController.cs|Privacy()|	Views/Home/Privacy|
 |localhost:5001/Home/Index|Controllers/HomeController.cs|Index()|	Views/Home/Index|
 

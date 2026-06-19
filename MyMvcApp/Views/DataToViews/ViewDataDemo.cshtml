@@ -1,0 +1,9 @@
+<h1>@ViewData["Title"]</h1>
+<p>Number of products: @ViewData["ProductCount"]</p>
+<p>Loop through products:</p>
+<ul>
+    @foreach (var item in (ViewData["Items"] as IEnumerable<ProductViewModel>) ?? [])
+    {
+        <li>@item.Name - &pound;@item.Price.ToString()</li>
+    }
+</ul>

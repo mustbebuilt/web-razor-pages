@@ -9,6 +9,14 @@ This quick start guide will set up a web application using the .net MVC template
  - Add additional dynamic pages via the View-Controller.
  - Pass Data from the Controller to the View.
 
+## Requirements
+
+This tutorial will require:
+
+- Visual Studio Code - Free, cross platform, [download](https://code.visualstudio.com/)
+- .net 10.0 - Free, cross platform, [download](https://dotnet.microsoft.com/en-us/download)
+- Also recommend Extensions .Net Install Tool, C# Dev Kit
+
 ## 1. Project Creation and First Run
 
 ### Step 1.1 Create the app
@@ -43,18 +51,15 @@ Test the application with:
 dotnet build
 dotnet run
 ```
+> [!NOTE]
+> The app runs on localhost for development.
+> Stop the running app before making large structure changes, then run again.  To stop the application use `Ctrl-C`
 
-Quick-start notes:
-- The app runs on localhost for development.
-- Stop the running app before making large structure changes, then run again.  To stop the application use `Ctrl-C`
-
-Tip: You can also use:
+To stop having to stop and restart the application you can enable 'hot reloads' with the following:
 
 ```bash
 dotnet watch run
 ```
-
-to enable hot reloads of the application.
 
 ## 2. MVC File Structure and Middleware
 
@@ -68,7 +73,7 @@ The main folders are:
 Models hold the business logic. Models to represent the data used in the application will be created here. In this simple application we won't make use of the Model.
 
 #### Views ####
-The Views that contain the HTML and other content. By default file _ViewStart.cshtml links to the _Layout.cshtml where the default Bootstrap HTML/CSS is set.
+The Views that contain the HTML and other content. By default file `_ViewStart.cshtml` links to the `_Layout.cshtml` where the default Bootstrap HTML/CSS is set.
 
 As a developer you can choose to make more folders inside Views to help structure your content.
 
@@ -86,7 +91,7 @@ These folder roles support MVC separation of concerns:
 ### Step 2.2 Understand key startup files
 
 
-- `Program.cs`: configures services and middleware pipeline (`startup.up` no longer used)
+- `Program.cs`: configures services and middleware pipeline (`startup.up` from earlier .net versions no longer used)
 - `appsettings.json`: application settings and environment config
 - `Views/_ViewStart.cshtml`: sets the default layout (`_Layout`)
 - `Views/_ViewImports.cshtml`: imports namespaces and Tag Helpers used by Razor views

@@ -1,0 +1,27 @@
+# .NET build output
+*/bin/
+*/obj/
+
+# Visual Studio / VS Code local files
+.vs/
+*.user
+*.rsuser
+*.suo
+
+# Rider / ReSharper
+.idea/
+_ReSharper*/
+*.DotSettings.user
+
+# ASP.NET Core local database files
+*.db
+*.db-shm
+*.db-wal
+
+# Test and coverage output
+*/TestResults/
+*/coverage/
+*/coverage.*
+
+# OS-generated files
+*/.DS_Store

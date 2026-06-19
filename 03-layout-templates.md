@@ -14,7 +14,7 @@ Before adding custom styling and navigation behavior, we can simplify the starte
 
 Locate `Views/Shared/_Layout.cshtml` and replace the code with:
 
-```cshtml
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>

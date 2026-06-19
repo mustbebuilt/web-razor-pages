@@ -1,0 +1,74 @@
+@model ProductListViewModel
+
+<h1>@Model.PageTitle</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model.Products)
+        {
+            <tr>
+                <td>@product.Id</td>
+                <td>@product.Name</td>
+                <td>&pound;@product.Price.ToString()</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div>
+    <h3>Explanation</h3>
+    <p>
+        This action method, `ViewModel`, is an MVC controller endpoint that prepares data for a Razor view. It creates
+        an
+        instance of `ProductListViewModel`, which acts as a container for all data the page needs, instead of passing
+        loose
+        values through `ViewBag` or `ViewData`. This is the strongly-typed approach and is generally easier to maintain.
+    </p>
+    <p>
+        Inside the object initializer, `PageTitle` is set to `"Products"` and `Products` is populated with three product
+        objects. The `new()` syntax relies on target-typed object creation, so the compiler infers the product type from
+        the
+        `Products` collection type in `ProductListViewModel`. The `m` suffix on prices (for example, `999.99m`) ensures
+        each
+        value is treated as a `decimal`, which is preferred for currency to avoid floating-point precision issues.
+    </p>
+    <p>
+        Finally, `return View(model);` sends that populated view model to the Razor view. By convention, MVC will look
+        for a
+        view named `ViewModel.cshtml` under `Views/DataToViews/` (or `Views/Shared/`). If the file uses a different
+        name,
+        the view name must be passed explicitly, such as `View("productListViewModel", model)`.
+    </p>
+    <p>
+        It is in ViewModels because its job is UI-specific, not domain-specific.
+    </p>
+    <p>
+        In this project, ProductListViewModel.cs shapes data exactly for a Razor page: title + list of products in a
+        format
+        the view expects. That is different from a core Model, which usually represents business/domain data or
+        persistence
+        entities used across the app.
+    </p>
+    <p>
+        A good rule of thumb:
+        <ol>
+            <li>Models: business meaning, reused across layers, not tied to one page.</li>
+            <li>ViewModels: tailored to one screen/action, may combine multiple sources, includes display-focused fields.
+            </li>
+        </ol>
+    </p>
+    <p>
+        Keeping them separate avoids coupling your domain objects to UI concerns and makes refactoring views safer. In
+        small
+        apps you can place both under a single Models folder, but separate ViewModels is a common and clean MVC
+        convention.
+    </p>
+
+</div>

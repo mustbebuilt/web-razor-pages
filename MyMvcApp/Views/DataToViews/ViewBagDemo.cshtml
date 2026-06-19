@@ -1,0 +1,10 @@
+<h1>@ViewBag.Title</h1>
+<p>Number of products: @ViewBag.ProductCounttt</p>
+<p>Loop through products:</p>
+<ul>
+    @foreach (var item in (ViewBag.Items as IEnumerable<ProductViewModel>) ?? [])
+    {
+        <li>@item.Name - &pound;@item.Price.ToString()</li>
+    }
+</ul>
+<p>ViewBag internally inserts data into ViewData dictionary. As such the key of ViewData and property of ViewBag must    NOT match.</p>

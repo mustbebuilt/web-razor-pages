@@ -36,7 +36,7 @@ public IActionResult Privacy()
         }
 ```
 		
-Public methods on a controller (except those with the `[NonAction] `attribute) are described as Actions. Actions can return anything, but frequently return an instance of `IActionResult` that produce a response. The action method is responsible for choosing what kind of response. Both of the above return Views. The View returned is the one that matches the name of the method.
+Public methods on a controller (except those with the `[NonAction] ` attribute) are described as Actions. Actions can return anything, but frequently return an instance of `IActionResult` that produce a response. The action method is responsible for choosing what kind of response. Both of the above return Views. The View returned is the one that matches the name of the method.
 
 ## Action Results
 
@@ -114,11 +114,12 @@ You will need to create a new view at `Views/Home/News.cshtml`.
 This can be viewed at https://localhost:5001/Home/News
 
 ## Creating a new Controller with its own routes
+
 As demonstrated above many views can be controlled by the same Controller file. However, as your application expands you may choose to create multiple controllers that create views within another route.
 
 Create a new Controller called `Controllers/NewsController`.
 
-``` c#
+```c#
 using Microsoft.AspNetCore.Mvc;
 
 namespace MyApp.Controllers
@@ -134,13 +135,13 @@ namespace MyApp.Controllers
 }
 ```
 					
-If you test the above by attempting to visit https://localhost:5001/News/ then an error is thrown.
+If you test the above by attempting to visit `https://localhost:5001/News/` then an error is thrown.
 
 ## Missing View File
 
 To fix this error create view file at `Views/News/Index.cshtml`.
 
-``` razor
+```csharp
 Views/News/Index.cshtml
 @{
     ViewData["Title"] = "News";
@@ -154,7 +155,7 @@ Try creating another view for the `Controllers/NewsController`
 
 Actions can be tested without Views using the Ok method. Amend `Controllers/HomeController.cs` with an action of:
 
-``` c#
+```csharp
 public IActionResult ActionTest()
         {
             return Ok("Just a Test");

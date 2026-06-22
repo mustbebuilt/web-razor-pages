@@ -1,44 +1,6 @@
 # Working with Views and Controllers for Routing
 
-## Explore the Views folder
-
-When setting up a basic MVC from the Visual Studio Template it will provide two views - Index and Privacy.
-
-These views are constructed from a layout template found at `Shared/_Layout.cshtml`.
-
-The use of the `Shared/_Layout.cshtml` template is dictated by the `_ViewStart.cshtml` at the root of `Views/`.
-
-## Explore the Index page
-
-The `Views/Home/Index.cshtml` contains some HTML and some `c#` code. The `c#` code sets the `ViewData["Title"]` value used to set the HTML `<title>` element in the page. Open `Shared/_Layout.cshtml` to see where this value is used in the template.
-
-## Explore the Controller
-
-The default MVC set up creates a `Controllers/HomeController` file. This files 'controls' both the Index and Privacy views through two methods with names that match the views.
-
-```c#
-public IActionResult Index()
-
-        {
-
-            return View();
-
-        }
-
-
-
-public IActionResult Privacy()
-
-        {
-
-            return View();
-
-        }
-```
-		
-Public methods on a controller (except those with the `[NonAction] ` attribute) are described as Actions. Actions can return anything, but frequently return an instance of `IActionResult` that produce a response. The action method is responsible for choosing what kind of response. Both of the above return Views. The View returned is the one that matches the name of the method.
-
-## Action Results
+## The Controller and Action Results
 
 The starter project provides two public methods in the `Controller/HomeController.cs`. Both actions have a result return type of `IActionResult`. This is an Action Result.
 
@@ -60,7 +22,7 @@ Great for testing. Simple HTTP response status code of 200 and string as payload
 
 How a View is selected by the Controller is known as routing. The URL request made is picked up by the controller and 'routed' to a view. The specifics for this was set out in the pattern defined in `MapControllerRoute` found in the `program.cs` file
 
-``` c#
+```csharp
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
@@ -83,9 +45,9 @@ Naming conventions are important here. The `HomeController` will look for views 
 
 | URL Called | Contoller Called | Action / Method Called | View Used |
 | ---------- | ---------------- | ---------------------- | --------- |
-||localhost:5001/Home/Index|	Controllers/HomeController.cs	|Index()	Views/Home/Index\
-localhost:5001/Home/|	Controllers/HomeController.cs	Index()	Views/Home/Index|
-|localhost:5001/|	Controllers/HomeController.cs|	Index()|	Views/Home/Index|
+|localhost:5001/Home/Index|Controllers/HomeController.cs|Index()|Views/Home/Index
+localhost:5001/Home/|Controllers/HomeController.cs|Index()|Views/Home/Index|
+|localhost:5001/|Controllers/HomeController.cs|Index()|Views/Home/Index|
 
 ## Experiment with Controllers and Views
 
@@ -117,16 +79,16 @@ This can be viewed at https://localhost:5001/Home/News
 
 As demonstrated above many views can be controlled by the same Controller file. However, as your application expands you may choose to create multiple controllers that create views within another route.
 
-Create a new Controller called `Controllers/NewsController`.
+Create a new Controller called `Controllers/StaffController`.
 
-```c#
+```csharp
 using Microsoft.AspNetCore.Mvc;
 
 namespace MyApp.Controllers
 {
-    public class NewsController : Controller
+    public class StaffController : Controller
     {
-        // GET: /<controller>/
+    
         public IActionResult Index()
         {
             return View();
@@ -135,21 +97,24 @@ namespace MyApp.Controllers
 }
 ```
 					
-If you test the above by attempting to visit `https://localhost:5001/News/` then an error is thrown.
+If you test the above by attempting to visit `https://localhost:5001/Staff/` then an error is thrown.
 
 ## Missing View File
 
-To fix this error create view file at `Views/News/Index.cshtml`.
+To fix this error create view file at `Views/Staff/Index.cshtml`.
 
 ```csharp
-Views/News/Index.cshtml
+Views/Staff/Index.cshtml
 @{
-    ViewData["Title"] = "News";
+    ViewData["Title"] = "Staff";
 }
-<h1>News Page from the NewsController</h1>
+<h1>Staff Page from the StaffController</h1>
 ```
 		
-Try creating another view for the `Controllers/NewsController`
+Try creating another view for the `Controllers/StaffController`.
+
+> [!Note]
+> You should use multiple controller files to keep your codebase organized, maintainable, and scalable as your application grows. In a real-world application, putting all your endpoint logic into a single file quickly becomes unmanageable.
 
 ## Using the Ok Method with Controllers
 
@@ -160,7 +125,7 @@ public IActionResult ActionTest()
         {
             return Ok("Just a Test");
         }
-```
+```News
 
 This can be tested with https://localhost:44354/Home/ActionTest.
 

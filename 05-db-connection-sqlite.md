@@ -32,7 +32,7 @@ To list your staff members into a new Razor View, you need to connect your datab
 Open your terminal inside your project directory and install the EF Core SQLite provider:
 
 ```terminal
-dotnet add package Microsoft.EntityFrameworkCore.Sqlite --version 10.0.9```
+dotnet add package Microsoft.EntityFrameworkCore.Sqlite --version 10.0.9
 ```
 
 ## Create the Staff Entity Model
@@ -123,7 +123,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 ## Build the Staff Controller
 Edit the `StaffController.cs` created earlier to pull the staff records from the database and send them down to your presentation layer.
 
-File: Controllers/StaffController.cs
 ```csharp
 using Microsoft.AspNetCore.Mvc;using MyMvcApp.Data;
 namespace MyMvcApp.Controllers;
@@ -197,6 +196,8 @@ Edit the existing view `Views/Staff/Index.cshtml` to render the data in a `HTML`
     </table>
 </div>
 ```
+
+We now have a data driven page with the staff details displayed.
 
 
 

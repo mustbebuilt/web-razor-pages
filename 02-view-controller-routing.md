@@ -125,7 +125,7 @@ public IActionResult ActionTest()
         {
             return Ok("Just a Test");
         }
-```News
+```
 
-This can be tested with https://localhost:44354/Home/ActionTest.
+This can be tested with https://localhost:xxxx/Home/ActionTest.
 

@@ -207,5 +207,16 @@ using MyMvcApp.ViewModels;
 
 The application will work just as before but to complete the example as a pure UI change amend the `index.cshmtl` view with:
 
+```html
+<select>
+        @foreach (dynamic product in Model.Products)
+        {
+            <option>@product</option>
+        }
+</select>
+```
+
+Now the data is used to produce a HTML `<select>` drop-down list.
+
 
 

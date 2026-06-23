@@ -94,7 +94,7 @@ Add the following to the `Shared/_Layout.cshtml` ensuring it is within the `<hea
 ```html
 <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 ```
-There is a `CSS` file with this repo to use.
+There is a `site.css` file with this repo that you can use.
 
 > [!Tip]
 > The `asp-append-version="true"` attribute is a built-in cache-busting feature. It automatically adds a unique hash suffix to the file URL based on its contents, forcing browsers to download the fresh stylesheet instantly whenever you update your CSS file. 
@@ -107,4 +107,5 @@ Introduced in modern .NET Core versions, CSS Isolation lets you scope styles exp
 * Implementation: Create a CSS file directly next to your view file in the file explorer and name it exactly after the view, appended with `.css`.
 * View Path: `Views/Home/Index.cshtml`
 * CSS Path: `Views/Home/Index.cshtml.css` 
-* How it Works: During compilation, the framework automatically bundles these files into a single, global app stylesheet (usually named `[YourProjectName].styles.css)`. It attaches a unique attribute selector (like `b-1234567890`) to both your generated HTML tags and your CSS selectors behind the scenes to lock down their scope.
+
+How it Works: During compilation, the framework automatically bundles these files into a single, global app stylesheet (usually named `[YourProjectName].styles.css`). It attaches a unique attribute selector (like `b-1234567890`) to both your generated HTML tags and your CSS selectors behind the scenes to lock down their scope.

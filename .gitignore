@@ -1,4 +1,8 @@
 # .NET build output
+bin/
+obj/
+**/bin/
+**/obj/
 */bin/
 */obj/
 
@@ -17,6 +21,8 @@ _ReSharper*/
 *.db
 *.db-shm
 *.db-wal
+data/*.db
+data/
 
 # Test and coverage output
 */TestResults/
@@ -24,4 +30,6 @@ _ReSharper*/
 */coverage.*
 
 # OS-generated files
+.DS_Store
+*.DS_Store
 */.DS_Store

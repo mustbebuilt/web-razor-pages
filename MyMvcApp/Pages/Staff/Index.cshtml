@@ -1,0 +1,92 @@
+@page
+@model MyMvcApp.Pages.Staff.IndexModel
+@{
+    ViewData["Title"] = "Staff Directory";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Staff Directory</h1>
+        <a asp-page="/Staff/Create" class="btn btn-primary">+ Add New Staff</a>
+    </div>
+
+    @if (TempData["StatusMessage"] is string msg)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @msg
+        </div>
+    }
+
+    <!-- Search & Filter Form -->
+    <form method="get" class="row g-3 mb-4 bg-light p-3 rounded">
+        <div class="col-md-5">
+            <input type="text" asp-for="SearchTerm" class="form-control" placeholder="Search by name, email, or role..." />
+        </div>
+        <div class="col-md-4">
+            <select asp-for="DepartmentFilter" class="form-select">
+                <option value="">-- All Departments --</option>
+                @foreach (var dept in Model.Departments)
+                {
+                    <option value="@dept">@dept</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3 d-flex gap-2">
+            <button type="submit" class="btn btn-secondary flex-grow-1">Filter</button>
+            <a asp-page="/Staff/Index" class="btn btn-outline-secondary">Reset</a>
+        </div>
+    </form>
+
+    <p class="text-muted">Total Active Employees: <strong>@Model.ActiveCount</strong></p>
+
+    <table class="table table-striped table-hover mt-3 align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Department</th>
+                <th>Job Title</th>
+                <th>Salary</th>
+                <th>Status</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.StaffList.Any())
+            {
+                <tr>
+                    <td colspan="8" class="text-center text-muted py-4">No staff members found matching your query.</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var member in Model.StaffList)
+                {
+                    <tr>
+                        <td>@member.StaffId</td>
+                        <td>@member.FirstName @member.LastName</td>
+                        <td>@member.Email</td>
+                        <td>@member.Department</td>
+                        <td>@member.JobTitle</td>
+                        <td>@member.Salary.ToString("C")</td>
+                        <td>
+                            @if (member.IsActive == 1)
+                            {
+                                <span class="badge bg-success">Active</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Inactive</span>
+                            }
+                        </td>
+                        <td class="text-end">
+                            <a asp-page="/Staff/Edit" asp-route-id="@member.StaffId" class="btn btn-sm btn-outline-primary me-1">Edit</a>
+                            <a asp-page="/Staff/Delete" asp-route-id="@member.StaffId" class="btn btn-sm btn-outline-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,182 +1,90 @@
-# Database Access Techniques
+# Database Access Techniques with Entity Framework Core
 
 #### TL;DR
 
-Extracting data can be done various ways. Applications need a `DbContext` for database queries. The `DbSet` property of a `DbContext` allows for core CRUDing (Creating, Reading, Updating, Deleting). Extension methods provide a nice shorthand for most situations. LINQ (Language Integrated Query) query and method syntax give a full range of query options.
+Applications interact with databases using a `DbContext`. The `DbSet<T>` property represents table collections and supports core CRUD operations (Create, Read, Update, Delete). LINQ (Language Integrated Query) query and method syntax provide powerful querying capabilities directly within Razor `PageModel` handler methods.
 
-### DbContext
+---
 
-Part of the Entity Framework Core, the `DbContext` class represents a session with a database and provides an API for working with the database.
+### DbContext and DbSet in Razor Pages
 
-The `DbContext` class has methods for Adding, Modifying and Deleting data. For extracting (querying) data, use the `DbSet` property of `DbContext`.
+Part of Entity Framework Core, the `DbContext` class represents a database connection session and provides an API for querying and saving data.
 
-Although Adding, Modifying and Deleting can be done directly via the `DbContext` it is most commonly done in Web Applications via the `DbSet` class to raise awareness of the table been affected.
+- `DbContext`: Manages database connections, transactions, and entity tracking.
+- `DbSet<TEntity>`: Represents an entity collection (mapping to a database table).
 
-Part of the Entity Framework Core, the `DbSet` class represents a collection for a given entity.
+Changes made to entities via `DbSet` are persisted to the database when `SaveChangesAsync()` or `SaveChanges()` is invoked on the `DbContext`.
 
-Various `DbSet` methods can be used to add, modifiy, delete and query the data via manipulation of the entity.
+In Razor Pages, the `DbContext` is injected into `PageModel` constructors via Dependency Injection (DI) and queried inside handler methods (`OnGetAsync()`, `OnPostAsync()`).
 
-Whether data is manipulated directly with `DbContext` or via `DbSet`, the changes are applied through the `SaveChanges()` method of the `DbContext`.
+---
 
-### Dbset
+### Key DbSet Methods
 
-The DbSet class represents an entity set that can be used for CRUDing (Creating, Reading, Updating, Deleting) operations.
+`Find(id)` / `FindAsync(id)`
+Finds an entity by its primary key. Returns `null` if no entity is found.
 
-Core methods of the DbSet class are:
-
-`Find(int)`
-
-Uses the primary key to find an entity and return it. A `null` value is returned if no entity found or the entity is not in context.
+`Add(entity)` / `AddAsync(entity)`
+Begins tracking a new entity to insert into the database.
 
 `Update(entity)`
-
-Begins tracking the given entity to update with the values provided. No changes applied to the database until the `SaveChanges()` is called.
+Begins tracking an existing entity to update its column values.
 
 `Remove(entity)`
+Begins tracking an entity for deletion.
 
-Begins tracking the given entity to remove it from the database. No changes applied to the database until the `SaveChanges()` is called.
+`SaveChangesAsync()`
+Asynchronously executes pending `INSERT`, `UPDATE`, and `DELETE` commands against the database.
 
-`SaveChanges()`
+---
 
-Saves all changes made in this context to the database.
+### LINQ Query Syntax vs. Method Syntax
 
-### LINQ Extension Methods
+#### 1. Method Syntax (Popular with Lambda Expressions)
 
-LINQ (Language Integrated Query) extension methods cover standard query operations.
+```csharp
+// Fetch active engineering staff ordered by last name
+var engineers = await _context.Staff
+    .Where(s => s.Department == "Engineering" && s.IsActive == 1)
+    .OrderBy(s => s.LastName)
+    .ToListAsync();
+```
 
-List and examples [here](https://www.entityframeworktutorial.net/querying-entity-graph-in-entity-framework.aspx)
+#### 2. Query Syntax (SQL-Like)
 
-`First()`
+```csharp
+var engineers = await (from s in _context.Staff
+                       where s.Department == "Engineering" && s.IsActive == 1
+                       orderby s.LastName
+                       select s).ToListAsync();
+```
 
-Returns the first element of a sequence.
+---
 
-`FirstOrDefault()`
+### Common LINQ Extension Methods
 
-Returns the first element of a sequence, or a default value if no element is found.
+| Extension Method | Description |
+|---|---|
+| `ToListAsync()` | Executes the query and returns a strongly-typed list. |
+| `FirstOrDefaultAsync()` | Returns the first element matching a predicate, or `null` if no element matches. |
+| `SingleOrDefaultAsync()` | Returns the single matching element, or throws an exception if multiple match. |
+| `CountAsync()` | Returns the total count of elements matching a query condition. |
+| `AnyAsync()` | Returns `true` if at least one matching element exists. |
 
-`Single()`
+---
 
-Returns the only element of a sequence that satisfies a specified condition.
+### Database-First Approach (Scaffolding Models)
 
-`SingleOrDefault()`
+If a SQLite or SQL Server database already exists, EF Core CLI tools can scaffold entity models and a `DbContext` automatically:
 
-Returns the only element of a sequence, or a default value if the sequence is empty.
+```bash
+dotnet ef dbcontext scaffold "Data Source=data/staff.db;" Microsoft.EntityFrameworkCore.Sqlite -o Models
+```
 
-`ToList()`
+---
 
-Returns a strongly typed list of objects.
+### Best Practices in Razor Pages
 
-`Count()`
-
-Returns the number of elements in a sequence.
-
-`Min()`
-
-Returns the minimum value in a sequence of values.
-
-`Max()`
-
-Returns the minimum value in a sequence of values.
-
-`Last()`
-
-Returns the last element of a sequence.
-
-`LastOrDefault()`
-
-Returns the last element of a sequence, or a default value if no element is found.
-
-`Average()`
-
-Computes the average of a sequence of numeric values.
-
-These are derived from `Dbset` which itself is derived from `IQueryable` which itself is derived from `IEnumerable` which is where all these [methods](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1?view=netcore-3.1#methods) can be found.
-
-### LINQ Query Syntax
-
-Similar to SQL Query but with a construct of from something In someCollection Select something
-
-Consider the basic SQL `SELECT` of:
-
-SELECT \* FROM Films
-
-With LINQ Query Syntax this would be written as:
-
-LINQ Query Syntax
-
-var myFilms = from f in \_db.Films select f;
-
-As with SQL `from` is used to indicate the collection / table to query. In the above `f` is a range variable. The `select` indicates the range variable (the something) to be extracted.
-
-Between the `from` and `select` we can add a `where` clause.
-
-In SQL a `WHERE` would appear as:
-
-SELECT \* FROM Films WHERE FilmCertificate = '12'
-
-With LINQ Query Syntax this would be written as:
-
-LINQ Query Syntax
-
-var myFilms = from f in \_db.Films where f.FilmCertificate == '12' select f;
-
-Wildcard 'contains' SQL queries appear as:
-
-SELECT \* FROM Films WHERE FilmTitle LIKE '%star%';
-
-In Linq the `Contains` keyword removes the need for the wildcards `%..%` and can be written as:
-
-LINQ Query Syntax
-
-films = from f in \_db.Films where f.FilmTitle.Contains("star") select f;
-
-Results can also be ordered for example:
-
-LINQ Query Syntax
-
-var filmsByPrice = from f in \_db.Films where f.FilmPrice > 2 orderby f.FilmPrice select f;
-
-### LINQ Method Syntax
-
-LINQ Method Syntax uses Lambda expressions to define the condition for the query. This shorthand is popular for simple queries but is harder to understand for with more complex logic.
-
-With this techniqe a SQL query of:
-
-SELECT \* FROM Films WHERE FilmTitle LIKE '%star%';
-
-... can be written as:
-
-LINQ Method Syntax
-
-films = films.WHERE(f => f.FilmTitle.Contains("star"));
-
-Note: A Lambda Expression is syntactic sugar (as with Javascript Arrow Functions) for a function or method with the 'good to go' arrow `=>` operator.
-
-### Database-First approach / Reverse Engineer the Models
-
-A database constructed first can be reverse engineered into Models.
-
-Use the console to run the `Scaffold-DbContext` command.
-
-Tools > nuget Package Manager > Package Management Console
-
-An example reverse engineering a database of `MyCourses` would be:
-
-Scaffold-DbContext "Server=(localdb)\\MSSQLLocalDB;Database=MyCourses;Trusted\_Connection=True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
-
-Specific tables can be targeted with the `-Tables` flag.
-
-Scaffold-DbContext "Server=(localdb)\\MSSQLLocalDB;Database=MyCourses;Trusted\_Connection=True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Tables MyTable
-
-See the [Microsoft Documentation](https://docs.microsoft.com/en-us/ef/core/managing-schemas/scaffolding?tabs=dotnet-core-cli) for more details.
-
-### Resources
-
-The [Query Gallery](mvc-query-gallery.php) provides examples based on the tutorial's `Films` database.
-
-See also:
-
-*   [Different Ways to Write LINQ Queries](https://dotnettutorials.net/lesson/different-ways-to-write-linq-query/)
-*   [MS Docs on LINQ](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/introduction-to-linq-queries)
-*   [Learn Entity Framework Core](https://www.learnentityframeworkcore.com/dbset)
-*   [Entity Framework Extension Methods](https://www.entityframeworktutorial.net/querying-entity-graph-in-entity-framework.aspx)
+1. **Use Async Data Methods**: Always prefer `ToListAsync()`, `FirstOrDefaultAsync()`, and `SaveChangesAsync()` inside async handler methods (`public async Task OnGetAsync()`).
+2. **Inject DbContext via DI**: Pass `ApplicationDbContext` into `PageModel` constructors rather than instantiating context instances manually.
+3. **Read-Only Queries (`AsNoTracking`)**: For GET handlers rendering views without updating data, append `.AsNoTracking()` to improve query performance.

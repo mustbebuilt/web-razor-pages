@@ -1,0 +1,73 @@
+@page "{id:int}"
+@model MyMvcApp.Pages.Staff.EditModel
+@{
+    ViewData["Title"] = "Edit Staff Member";
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8">
+        <h1>Edit Staff Member</h1>
+        <p class="text-muted">Update details for @Model.Staff.FirstName @Model.Staff.LastName (ID: @Model.Staff.StaffId).</p>
+
+        <form method="post" class="mt-4">
+            <input type="hidden" asp-for="Staff.StaffId" />
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Staff.FirstName" class="form-label">First Name</label>
+                    <input asp-for="Staff.FirstName" class="form-control" />
+                    <span asp-validation-for="Staff.FirstName" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Staff.LastName" class="form-label">Last Name</label>
+                    <input asp-for="Staff.LastName" class="form-control" />
+                    <span asp-validation-for="Staff.LastName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Staff.Email" class="form-label">Email Address</label>
+                <input asp-for="Staff.Email" class="form-control" type="email" />
+                <span asp-validation-for="Staff.Email" class="text-danger"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Staff.Department" class="form-label">Department</label>
+                    <input asp-for="Staff.Department" class="form-control" />
+                    <span asp-validation-for="Staff.Department" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Staff.JobTitle" class="form-label">Job Title</label>
+                    <input asp-for="Staff.JobTitle" class="form-control" />
+                    <span asp-validation-for="Staff.JobTitle" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Staff.Salary" class="form-label">Annual Salary (£)</label>
+                    <input asp-for="Staff.Salary" class="form-control" type="number" step="0.01" />
+                    <span asp-validation-for="Staff.Salary" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Staff.IsActive" class="form-label">Status</label>
+                    <select asp-for="Staff.IsActive" class="form-select">
+                        <option value="1">Active</option>
+                        <option value="0">Inactive</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="d-flex gap-2 mt-3">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <a asp-page="/Staff/Index" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

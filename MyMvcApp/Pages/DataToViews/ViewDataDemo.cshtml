@@ -1,0 +1,33 @@
+@page
+@model MyMvcApp.Pages.DataToViews.ViewDataDemoModel
+@{
+    var items = ViewData["Items"] as List<MyMvcApp.Pages.DataToViews.StaffSummary> ?? [];
+    var count = ViewData["StaffCount"] as int? ?? 0;
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>ViewData is a string-keyed dictionary used to pass data to views. Note that non-string objects require explicit casting.</p>
+<p>Total Staff in ViewData: <strong>@count</strong></p>
+
+<table class="table table-bordered mt-3">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Job Title</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var staff in items)
+        {
+            <tr>
+                <td>@staff.Id</td>
+                <td>@staff.Name</td>
+                <td>@staff.Department</td>
+                <td>@staff.JobTitle</td>
+            </tr>
+        }
+    </tbody>
+</table>

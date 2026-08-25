@@ -1,0 +1,32 @@
+@page
+@model MyMvcApp.Pages.DataToViews.ViewBagDemoModel
+@{
+    ViewData["Title"] = ViewBag.Title;
+}
+
+<h1>@ViewBag.Title</h1>
+
+<p>ViewBag provides dynamic access to ViewData in Razor views without needing explicit casting.</p>
+<p>Total Staff in ViewBag: <strong>@ViewBag.StaffCount</strong></p>
+
+<table class="table table-striped mt-3">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Job Title</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (dynamic staff in ViewBag.Items)
+        {
+            <tr>
+                <td>@staff.Id</td>
+                <td>@staff.Name</td>
+                <td>@staff.Department</td>
+                <td>@staff.JobTitle</td>
+            </tr>
+        }
+    </tbody>
+</table>

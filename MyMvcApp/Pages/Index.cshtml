@@ -1,0 +1,36 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">@Model.Message</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core/razor-pages">building Web apps with ASP.NET Core Razor Pages</a>.</p>
+</div>
+
+<section class="mt-4">
+    <h2>Featured Staff Members</h2>
+    @if (Model.FeaturedStaff.Count == 0)
+    {
+        <p>No staff members available.</p>
+    }
+    else
+    {
+        <p>There are @Model.FeaturedStaff.Count featured staff members:</p>
+        <ul>
+            @foreach (var staff in Model.FeaturedStaff)
+            {
+                <li>@staff</li>
+            }
+        </ul>
+
+        <h3>Staff Quick Selector</h3>
+        <select class="form-select">
+            @foreach (var staff in Model.FeaturedStaff)
+            {
+                <option value="@staff">@staff</option>
+            }
+        </select>
+    }
+</section>

@@ -1,0 +1,21 @@
+@page
+@model MyMvcApp.Pages.DataToViews.TempDataDemoModel
+@{
+    ViewData["Title"] = "TempData Example";
+}
+
+<h1>TempData Example</h1>
+
+<p>TempData stores data between HTTP requests, which is ideal for POST-Redirect-GET patterns and flash status notifications.</p>
+
+@if (!string.IsNullOrEmpty(Model.StatusMessage))
+{
+    <div class="alert alert-success mt-3" role="alert">
+        @Model.StatusMessage
+    </div>
+}
+
+<form method="post" asp-page-handler="SetTempDataMessage" class="mt-4">
+    <button type="submit" class="btn btn-primary">Save Staff Record (Trigger TempData)</button>
+</form>
+```

@@ -1,111 +1,113 @@
-# Layout View Options
+# Layout Templates, Tag Helpers, and Styling in Razor Pages
 
-## The Default Shared _Layout
+## The Default Shared Layout (`_Layout.cshtml`)
 
-Web pages should have a consistent look and feel. One of the key ways this is achieved with ASP.net MVC is through the `_layout.cshtml` page.
+Web applications require consistent branding, navigation, and page layouts. In ASP.NET Core Razor Pages, shared document structure is managed using layout pages.
 
-By default the `Views/Shared/_layout.cshtml` provides a template that all Views will use. The HTML content of any given View is inserted into the template via the `@RenderBody()` command.
+By default, `Pages/Shared/_Layout.cshtml` defines the master HTML layout. Individual page templates inject their content into the layout via the `@RenderBody()` directive.
 
-This provides a great starting point allowing for a `_layout.cshtml` page to be developed with a common skeleton HTML layout including references to CSS and Javascript files. This is exactly what the starter project provides via the popular Bootstrap CSS Framework.
+---
 
-## Remove MVC starter template UI code
+## The Default ViewStart and ViewImports
 
-Before adding custom styling and navigation behavior, we can simplify the starter template UI.
+To prevent every page from needing to declare `Layout = "_Layout"`, ASP.NET Core uses `Pages/_ViewStart.cshtml`:
 
-Locate `Views/Shared/_Layout.cshtml` and replace the code with:
+```cshtml
+@{
+    Layout = "_Layout";
+}
+```
 
-```html
+Global namespaces and Razor Tag Helpers are imported in `Pages/_ViewImports.cshtml`:
+
+```cshtml
+@namespace MyRazorApp.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+```
+
+---
+
+## Simplified Layout Structure
+
+A minimal layout shell in `Pages/Shared/_Layout.cshtml`:
+
+```cshtml
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>@ViewData["Title"]</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MyRazorApp</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
-	@RenderBody()
+    <header>
+        <nav>
+            <ul>
+                <li><a asp-page="/Index">Home</a></li>
+                <li><a asp-page="/News">News</a></li>
+                <li><a asp-page="/Staff/Index">Staff</a></li>
+                <li><a asp-page="/Privacy">Privacy</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        @RenderBody()
+    </main>
+
+    <footer>
+        <p>&copy; @DateTime.Now.Year MyRazorApp - @DateTime.Now.ToString("dd MMM yyyy")</p>
+    </footer>
 </body>
 </html>
 ```
-This stripped-down version is useful for understanding how layouts work before adding navigation and custom UI behavior.
 
-## Adding Navigation
+---
 
-We have now lost our navigation between pages.  Instead of adding code to each view, we could add common content to the shared layout file.  Replace ` @RenderBody()` in `Views/Shared/_Layout.cshtml` with:
+## Using `asp-page` Tag Helpers for Navigation
 
-```html
-<nav>
-        <menu>
-            <li><a href="/">Home</a></li>
-            <li><a href="/Home/Privacy">Privacy</a></li>
-            <li><a href="/Home/News">News</a></li>
-            <li><a href="/Staff">Staff</a>
-                <li><a href="/Home/ActionTest">ActionTest</a></li>
-            </menu>
-        </nav>
-        <section>
-            @RenderBody()
-        </section>
+In Razor Pages, internal navigation links use the `asp-page` Tag Helper instead of hardcoded `href` paths:
+
+```cshtml
+<a asp-page="/Index">Home</a>
+<a asp-page="/Staff/Index">Staff Directory</a>
+<a asp-page="/DataToViews/TempDataDemo">TempData Demo</a>
 ```
 
-## Razor
+### Key Benefits of `asp-page` Tag Helpers:
 
-As we are using Razor we could extend the layout by adding a footer with an automatic date.
+- **Refactoring-Friendly**: If page structures or route parameters change, ASP.NET Core dynamically calculates correct URLs.
+- **IntelliSense & Safety**: Modern IDEs provide auto-completion for page names and highlight broken references at design time.
 
-```html
-<footer>
-<p>@DateTime.Now.ToString("dd MMM yyyy")</p>
-</footer>
-```
-The current date will now appear in the footer of all pages.
+---
 
+## Managing Static Files and CSS
 
-## Tag Helpers in Hyperlinks
+### 1. Global Stylesheets (`wwwroot/css/`)
 
-In the above we hardcoded the URLs in the navigation.  We could use tag helpers `asp-controller` and `asp-action` instead of the HTML attribute `href`.   The two attributes tell the application which controller to use and which method/action in that controller.
+Global CSS stylesheets are saved in `wwwroot/css/site.css` and linked inside the layout `<head>`:
 
-```html
-<menu>
-            <li><a asp-controller="Home" asp-action="Index">Home</a></li>
-            <li><a asp-controller="Home" asp-action="Privacy">Privacy</a></li>
-            <li><a asp-controller="Home" asp-action="News">News</a></li>
-            <li><a asp-controller="Staff" asp-action="Index">Staff</a></li>
-            <li><a asp-controller="Home" asp-action="ActionTest">ActionTest</a></li>
-        </menu>
-```
-
-This approach replaces hardcoded URLs (like href="/Home/Index") with dynamic, server-side route generation.  Two of the benefits are:
-
-- If you change your URL routing structure in `Program.cs` later (e.g., changing `/Home/Index` to `/welcome`), the framework updates all your links automatically. You do not need to hunt through your codebase to fix broken paths.
-- Modern IDEs provide full IntelliSense, autocomplete, and syntax highlighting for `asp-controller` and `asp-action` attributes, reducing typos.
-
-## Adding Static Files
-
-We have several flexible options for managing and adding CSS styles. These range from global styles shared across the entire site to isolated styles specific to a single view.  These are two of many techiques.
-
-### Global Stylesheets
-Global stylesheets are stored in the static assets folder `wwwroot/css` and are loaded on every page via the shared layout template.
-
-* Location: Place your .css files inside the `wwwroot/css/` directory.
-* Implementation: Link the stylesheet inside the <head> tag of your shared layout file (usually located at Views/`Shared/_Layout.cshtml`):
-
-Add the following to the `Shared/_Layout.cshtml` ensuring it is within the `<head>` of the document.
-
-```html
+```cshtml
 <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 ```
-There is a `site.css` file with this repo that you can use.
 
-> [!Tip]
-> The `asp-append-version="true"` attribute is a built-in cache-busting feature. It automatically adds a unique hash suffix to the file URL based on its contents, forcing browsers to download the fresh stylesheet instantly whenever you update your CSS file. 
+> [!TIP]
+> The `asp-append-version="true"` attribute provides automatic browser cache-busting by appending a unique hash parameter to file URLs whenever the stylesheet is edited.
 
+---
 
+### 2. CSS Isolation (Scoped Component Styling)
 
-### CSS Isolation (Component-Style Styling)
-Introduced in modern .NET Core versions, CSS Isolation lets you scope styles explicitly to a single view. This prevents styles from leaking out and accidentally modifying other elements on different pages.
+CSS Isolation allows styles to be scoped strictly to a single Razor Page without affecting other pages.
 
-* Implementation: Create a CSS file directly next to your view file in the file explorer and name it exactly after the view, appended with `.css`.
-* View Path: `Views/Home/Index.cshtml`
-* CSS Path: `Views/Home/Index.cshtml.css` 
+- **Page View**: `Pages/Index.cshtml`
+- **Scoped CSS File**: `Pages/Index.cshtml.css`
 
-How it Works: During compilation, the framework automatically bundles these files into a single, global app stylesheet (usually named `[YourProjectName].styles.css`). It attaches a unique attribute selector (like `b-1234567890`) to both your generated HTML tags and your CSS selectors behind the scenes to lock down their scope.
+During compilation, ASP.NET Core automatically bundles scoped styles into `[ProjectName].styles.css` (e.g. `MyMvcApp.styles.css`) and attaches unique scope attributes (e.g. `b-1234567890`) to matching elements.
+
+Link the bundle in `_Layout.cshtml`:
+
+```cshtml
+<link rel="stylesheet" href="~/MyMvcApp.styles.css" asp-append-version="true" />
+```

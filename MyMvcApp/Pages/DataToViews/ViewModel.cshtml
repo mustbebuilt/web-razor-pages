@@ -1,0 +1,31 @@
+@page
+@model MyMvcApp.Pages.DataToViews.ViewModelModel
+@{
+    ViewData["Title"] = Model.PageTitle;
+}
+
+<h1>@Model.PageTitle</h1>
+
+<p>In Razor Pages, public properties declared directly on the <code>PageModel</code> serve as strongly-typed view data without needing external ViewModel classes.</p>
+
+<table class="table table-striped mt-3">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Job Title</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var staff in Model.StaffMembers)
+        {
+            <tr>
+                <td>@staff.Id</td>
+                <td>@staff.Name</td>
+                <td>@staff.Department</td>
+                <td>@staff.JobTitle</td>
+            </tr>
+        }
+    </tbody>
+</table>

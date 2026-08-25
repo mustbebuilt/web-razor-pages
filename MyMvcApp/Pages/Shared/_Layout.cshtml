@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MyRazorApp</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/MyMvcApp.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="site-nav" aria-label="Main navigation">
+            <button class="burger" type="button" aria-controls="primary-menu" aria-expanded="false" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul id="primary-menu" class="menu">
+                <li><a asp-page="/Index">Home</a></li>
+                <li><a asp-page="/News">News</a></li>
+                <li><a asp-page="/Staff/Index">Staff Directory</a></li>
+                <li><a asp-page="/DataToViews/ViewModel">PageModel Data</a></li>
+                <li><a asp-page="/DataToViews/ViewDataDemo">ViewData</a></li>
+                <li><a asp-page="/DataToViews/ViewBagDemo">ViewBag</a></li>
+                <li><a asp-page="/DataToViews/TempDataDemo">TempData</a></li>
+                <li><a asp-page="/Privacy">Privacy</a></li>
+
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    <li class="auth-item"><span class="user-greeting">Hello, <strong>@User.Identity.Name</strong>!</span></li>
+                    <li class="auth-item"><a asp-page="/Account/Logout" class="btn-logout">Logout</a></li>
+                }
+                else
+                {
+                    <li class="auth-item"><a asp-page="/Account/Login">Login</a></li>
+                    <li class="auth-item"><a asp-page="/Account/Register">Register</a></li>
+                }
+            </ul>
+        </nav>
+    </header>
+
+    <main role="main" class="container">
+        @RenderBody()
+    </main>
+
+    <footer>
+        <p>&copy; @DateTime.Now.Year - MyRazorApp | @DateTime.Now.ToString("ddd d MMM yyyy")</p>
+    </footer>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

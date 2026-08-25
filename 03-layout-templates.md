@@ -44,10 +44,10 @@ A minimal layout shell in `Pages/Shared/_Layout.cshtml`:
     <header>
         <nav>
             <ul>
-                <li><a asp-page="/Index">Home</a></li>
-                <li><a asp-page="/News">News</a></li>
-                <li><a asp-page="/Staff/Index">Staff</a></li>
-                <li><a asp-page="/Privacy">Privacy</a></li>
+                <li><a href="/Index">Home</a></li>
+                <li><a href="/News">News</a></li>
+                <li><a href="/Staff/Index">Staff</a></li>
+                <li><a href="/Privacy">Privacy</a></li>
             </ul>
         </nav>
     </header>
@@ -63,11 +63,13 @@ A minimal layout shell in `Pages/Shared/_Layout.cshtml`:
 </html>
 ```
 
+Remember the individual pages are providing the content that is rendered in the `RenderBody()` directive. For example, the `Index.cshtml` file provides the content for the `RenderBody()` directive in the `_Layout.cshtml` file.
+
 ---
 
 ## Using `asp-page` Tag Helpers for Navigation
 
-Notice the use of `asp-page` instead of `href` in the layout file above. The `asp-page` attribute is a Razor Tag Helper that is used to generate URL-encoded href attributes for navigation within a Razor Pages application.
+In the above example, we used `href` attributes to navigate between pages. The `href` attribute is a standard HTML attribute that is used to specify the URL of a link. The `asp-page` attribute is a Razor Tag Helper that is used to generate URL-encoded href attributes for navigation within a Razor Pages application. In essence, it provides a more robust and maintainable way to handle navigation in a Razor Pages application.  As such amend the above layout file to use `asp-page` instead of `href` attributes, for example:
 
 ```cshtml
 <a asp-page="/Index">Home</a>
@@ -82,6 +84,8 @@ Notice the use of `asp-page` instead of `href` in the layout file above. The `as
 ---
 
 ## Managing Static Files and CSS
+
+We have refered to dynamic pages and Razor code above. However, we also need to consider how to include other resources, such as images and stylesheets. These are often referred to as static files. Static files are files that are served directly to the client without any processing. These include HTML, CSS, JavaScript, and image files. 
 
 ### 1. Global Stylesheets (`wwwroot/css/`)
 

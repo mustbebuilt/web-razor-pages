@@ -12,4 +12,4 @@ In a Razor view template, use the `@` symbol to transition from HTML to C# code.
 
 The `DateTime.Now.Year` is a Razor expression that displays the current year. The `@` symbol is used to transition from HTML to C# code. 
 
-We will see other examples of razor expressions later in the tutorial.
+We will see other examples of razor expressions later in the tutorial such as loops and condition for handling data collections and displaying them in the browser.

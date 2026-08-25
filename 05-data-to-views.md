@@ -16,7 +16,9 @@ The primary ways to pass data include:
 
 ## 1. Strongly-Typed PageModel Properties (Recommended)
 
-In Razor Pages, the `PageModel` class acts as its own ViewModel. Declaring public properties on the `PageModel` makes them accessible in the view via `@Model`.
+In Razor Pages, the `PageModel` class acts as its own `ViewModel`. Declaring public properties on the `PageModel` makes them accessible in the view via `@Model`.
+
+A `ViewModel` is a class that holds the data that is displayed in a view. It acts as a bridge between the controller and the view, and it is used to transfer data from the controller to the view. It can also contain helper methods or logic that is specific to the view, such as formatting data or performing calculations.
 
 ### Step 1: Define Properties in `PageModel`
 
@@ -86,7 +88,7 @@ Properties from the `PageModel` can easily populate interactive HTML form contro
 
 ## 3. ViewData for Small Metadata
 
-`ViewData` is a weakly-typed dictionary suitable for small data values like page titles:
+`ViewData` is a weakly-typed dictionary suitable for small data values.  We have already encountered this dictionary previously when using the `_Layout.cshtml` file where we used it to store the page title.  `ViewData` can also be used to store other data values that are not strongly typed, such as strings, integers, and booleans.
 
 ```csharp
 // In PageModel handler:
@@ -102,7 +104,7 @@ ViewData["Title"] = "Staff Directory";
 
 ## 4. TempData for Flash Messages across Redirects
 
-`TempData` persists data across a single HTTP redirect, making it ideal for POST-Redirect-GET patterns:
+Sometimes we need to pass data across a single HTTP redirect, for example when we want to display a success message after a form submission.  `TempData` persists data across a single HTTP redirect, making it ideal for POST-Redirect-GET patterns.  This is known as a flash message.  A flash message is a message that is displayed to the user once and then discarded.  The following code demonstrates how to use `TempData` to display a success message after a form submission:
 
 ```csharp
 // File: Pages/DataToViews/TempDataDemo.cshtml.cs

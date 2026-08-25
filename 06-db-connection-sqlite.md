@@ -1,16 +1,25 @@
 # Database Integration with SQLite and Entity Framework Core in Razor Pages
 
-## SQLite and Entity Framework Core
+Now that we have seen how data can be passed between the different components of a web application using Model Binding and Razor expressions, it is time to look at storing and retrieving data from a database. 
 
-Entity Framework Core (EF Core) is an Object-Relational Mapper (ORM) that enables .NET developers to interact with databases using strongly-typed C# objects.
+We will use **SQLite** as our database for this guide. SQLite is a lightweight, zero-configuration, file-based database engine that is ideal for learning and rapid local development.
 
-This guide demonstrates connecting an SQLite database (`data/Staff.db`) to an ASP.NET Core Razor Pages application. You can find the SQL script to create and seed the staff table in [resources/staff-sqlite.sql](/resources/staff-sqlite.sql).
+This guide demonstrates connecting an SQLite database (`Data/staff.db`) to an ASP.NET Core Razor Pages application. You can find the SQL script to create and seed the staff table in [resources/staff-sqlite.sql](resources/staff-sqlite.sql).
 
 ---
 
-## 1. Install SQLite EF Core NuGet Package
+## 1. SQLite and Entity Framework Core
 
-Open a terminal inside your project directory and add the EF Core SQLite provider:
+**Entity Framework Core (EF Core)** is an Object-Relational Mapper (ORM) that enables .NET developers to interact with databases using strongly-typed C# objects instead of writing raw SQL strings.
+
+### What is an ORM?
+An ORM acts as a translator between two different type systems: the object-oriented C# model representation and the relational database schema. EF Core automatically translates LINQ queries written in C# into SQL commands executed against the underlying database engine, returning query results back as C# objects.
+
+---
+
+## 2. Install SQLite EF Core NuGet Package
+
+Open a terminal inside your project directory and add the EF Core SQLite provider package:
 
 ```bash
 dotnet add package Microsoft.EntityFrameworkCore.Sqlite
@@ -18,9 +27,9 @@ dotnet add package Microsoft.EntityFrameworkCore.Sqlite
 
 ---
 
-## 2. Create the Staff Entity Model (`Models/Staff.cs`)
+## 3. Create the Staff Entity Model (`Models/Staff.cs`)
 
-Create a class inside `Models/Staff.cs` matching your database schema:
+Create a model class in `Models/Staff.cs` mapping to your database table schema:
 
 ```csharp
 using System.ComponentModel.DataAnnotations;
@@ -56,15 +65,35 @@ public class Staff
     public double Salary { get; set; }
 
     [Column("is_active")]
-    public int IsActive { get; set; } // 0 or 1
+    public int IsActive { get; set; } // 0 = Inactive, 1 = Active
 }
 ```
 
+The above indicates that the staff table has the following columns:
+
+* **StaffId**: The primary key of the table.
+* **FirstName**: The first name of the staff member.
+* **LastName**: The last name of the staff member.
+* **Email**: The email address of the staff member.
+* **Department**: The department of the staff member.
+* **JobTitle**: The job title of the staff member.
+* **HireDate**: The hire date of the staff member.
+* **Salary**: The salary of the staff member.
+* **IsActive**: Whether the staff member is active or not (1 = Active, 0 = Inactive).
+
+The C# model class `Staff` is a strongly-typed representation of the `staff` table in the database.  The `[Key]` attribute indicates that the `StaffId` property is the primary key of the table.  The `[Column("column_name")]` attribute indicates that the property is mapped to a specific column in the database table.  Although not used in this example, other common attributes include:
+
+* `[Required]`: indicates that the property is required and cannot be null.
+* `[MaxLength(n)]`: indicates that the property has a maximum length of n characters.
+* `[EmailAddress]`: indicates that the property is an email address.
+
 ---
 
-## 3. Create the Database Context (`Data/ApplicationDbContext.cs`)
+## 4. Create the Database Context (`Data/ApplicationDbContext.cs`)
 
-The `DbContext` represents a session with the SQLite database:
+A `DbContext` represents a session with the database and acts as the central manager for data operations. It tracks entity states, maps C# classes to database tables, and executes queries.
+
+Create `Data/ApplicationDbContext.cs` inheriting from `DbContext`:
 
 ```csharp
 using Microsoft.EntityFrameworkCore;
@@ -74,22 +103,27 @@ namespace MyRazorApp.Data;
 
 public class ApplicationDbContext : DbContext
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) 
+        : base(options) { }
 
     public DbSet<Staff> Staff { get; set; } = null!;
 }
 ```
 
+### Key Components Explained:
+- **`DbContextOptions<ApplicationDbContext>`**: A strongly-typed configuration object containing settings such as the database provider and connection string. Passing this to `: base(options)` allows ASP.NET Core's Dependency Injection system to configure the database context at application startup.
+- **`DbSet<Staff> Staff`**: Represents the `staff` database table. LINQ queries executed against this property return `Staff` entity instances.
+
 ---
 
-## 4. Configure Connection String and Register Service
+## 5. Configure Connection String and Register Service
 
-In `appsettings.json`, specify your SQLite connection string:
+In `appsettings.json`, add your SQLite connection string pointing to your database file:
 
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Data Source=data/staff.db;"
+    "DefaultConnection": "Data Source=Data/staff.db"
   }
 }
 ```
@@ -102,7 +136,7 @@ using MyRazorApp.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Register SQLite DbContext
+// Register SQLite DbContext service with Dependency Injection
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -111,9 +145,9 @@ builder.Services.AddRazorPages();
 
 ---
 
-## 5. Inject DbContext into the Razor PageModel (`Pages/Staff/Index.cshtml.cs`)
+## 6. Inject DbContext into the PageModel (`Pages/Staff/Index.cshtml.cs`)
 
-In Razor Pages, dependencies are injected directly through the `PageModel` constructor:
+In Razor Pages, dependencies are injected directly into the `PageModel` constructor:
 
 ```csharp
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -127,7 +161,7 @@ public class IndexModel : PageModel
 {
     private readonly ApplicationDbContext _context;
 
-    // Inject DbContext via primary constructor or standard constructor
+    // Dependency Injection via constructor
     public IndexModel(ApplicationDbContext context)
     {
         _context = context;
@@ -144,9 +178,17 @@ public class IndexModel : PageModel
 }
 ```
 
+### Code Explanation:
+- **Dependency Injection**: ASP.NET Core automatically instantiates and passes the configured `ApplicationDbContext` to the `IndexModel` constructor when a request for the page arrives.
+- **`async` / `await`**: The `OnGetAsync()` method executes asynchronously, allowing the server thread to handle other web requests while the database reads from disk.
+- **`ToListAsync()`**: Asynchronously queries the `Staff` table and returns all records as a C# list.
+- **`ActiveCount`**: Uses LINQ to filter and count active staff members (`IsActive == 1`).
+
 ---
 
-## 6. Render Data in the Razor Page (`Pages/Staff/Index.cshtml`)
+## 7. Render Data in the Razor Page (`Pages/Staff/Index.cshtml`)
+
+Display the queried data in the Razor view template using HTML and Razor expressions:
 
 ```cshtml
 @page
@@ -194,12 +236,10 @@ public class IndexModel : PageModel
         }
     </tbody>
 </table>
-
 ```
 
 ---
 
 ## Alternative Database Option
 
-For connecting to Microsoft SQL Server instead of SQLite, see the [MSSQL Database Integration Guide](file:///Users/martincooper/Documents/github-demo-sites-for-modules/web-razor-pages/07-db-connection-mssql.md).
-
+For connecting to Microsoft SQL Server instead of SQLite, see the [MSSQL Database Integration Guide](07-db-connection-mssql.md).

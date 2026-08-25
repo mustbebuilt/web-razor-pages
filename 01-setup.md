@@ -9,6 +9,17 @@ This quick start guide sets up a web application using the ASP.NET Core **Razor 
 - Add dynamic Razor Pages with C# code-behind `PageModel` classes.
 - Pass data between `PageModel` handlers and Razor view templates.
 
+## Server-Side Technologies
+
+Razor pages is one of many server-side technologies that can be used to create web applications. These technologies generate HTML and send it to the browser, often refered to as dynamically generated web pages. Other server-side technologies include PHP, Java Server Pages (JSP), and Ruby on Rails. Indeed .net offers other server-side technologies such as MVC and Blazor. 
+
+Two of the key benefits of a server-side approach are:
+
+- Easy templating for page maintenance and consistent styling across pages.
+- The use of a backend database to build dynamic data-driven web applications.
+
+Most web applications will reach a point where client-side technologies such as Javascript and CSS are insufficient to meet the requirements of the application. This is particularly true for applications that require a backend database to store and retrieve data. In such cases, a server-side approach is required. In this tutorial we will use .net and the Razor Pages framework to build a web application that uses a backend database to store and retrieve data.
+
 ---
 
 ## Requirements
@@ -34,6 +45,8 @@ dotnet new razor -n MyRazorApp
 ### Step 2. Move into the Project Folder
 
 If using VS Code, reopen the folder in the terminal so the path is set to `MyRazorApp`.
+
+Alternatively, move into the project folder using the terminal:
 
 ```bash
 cd MyRazorApp

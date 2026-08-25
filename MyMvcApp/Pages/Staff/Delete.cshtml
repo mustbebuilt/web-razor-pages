@@ -4,38 +4,30 @@
     ViewData["Title"] = "Delete Staff Member";
 }
 
-<div class="row justify-content-center mt-4">
-    <div class="col-md-6">
-        <div class="card border-danger">
-            <div class="card-header bg-danger text-white">
-                <h2 class="h5 mb-0">Confirm Deletion</h2>
-            </div>
-            <div class="card-body">
-                <p>Are you sure you want to delete the following staff record?</p>
+<div>
+    <h1>Confirm Deletion</h1>
+    <p>Are you sure you want to delete the following staff record?</p>
 
-                <dl class="row">
-                    <dt class="col-sm-4">ID</dt>
-                    <dd class="col-sm-8">@Model.Staff.StaffId</dd>
+    <dl>
+        <dt>ID</dt>
+        <dd>@Model.Staff.StaffId</dd>
 
-                    <dt class="col-sm-4">Name</dt>
-                    <dd class="col-sm-8">@Model.Staff.FirstName @Model.Staff.LastName</dd>
+        <dt>Name</dt>
+        <dd>@Model.Staff.FirstName @Model.Staff.LastName</dd>
 
-                    <dt class="col-sm-4">Email</dt>
-                    <dd class="col-sm-8">@Model.Staff.Email</dd>
+        <dt>Email</dt>
+        <dd>@Model.Staff.Email</dd>
 
-                    <dt class="col-sm-4">Department</dt>
-                    <dd class="col-sm-8">@Model.Staff.Department</dd>
+        <dt>Department</dt>
+        <dd>@Model.Staff.Department</dd>
 
-                    <dt class="col-sm-4">Job Title</dt>
-                    <dd class="col-sm-8">@Model.Staff.JobTitle</dd>
-                </dl>
+        <dt>Job Title</dt>
+        <dd>@Model.Staff.JobTitle</dd>
+    </dl>
 
-                <form method="post" class="mt-4">
-                    <input type="hidden" asp-for="Staff.StaffId" />
-                    <button type="submit" class="btn btn-danger">Yes, Delete Staff Member</button>
-                    <a asp-page="/Staff/Index" class="btn btn-outline-secondary ms-2">Cancel</a>
-                </form>
-            </div>
-        </div>
-    </div>
+    <form method="post">
+        <input type="hidden" asp-for="Staff.StaffId" />
+        <button type="submit">Yes, Delete Staff Member</button>
+        <a asp-page="/Staff/Index">Cancel</a>
+    </form>
 </div>

@@ -106,22 +106,22 @@ In Razor views, form input fields use `asp-for` Tag Helpers to automatically gen
 
 <form method="post">
     <!-- Validation Summary for overall model errors -->
-    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+    <div asp-validation-summary="ModelOnly"></div>
 
-    <div class="mb-3">
-        <label asp-for="Staff.FirstName" class="form-label">First Name</label>
-        <input asp-for="Staff.FirstName" class="form-control" />
+    <div>
+        <label asp-for="Staff.FirstName">First Name</label>
+        <input asp-for="Staff.FirstName" />
         <!-- Field-level validation error message -->
-        <span asp-validation-for="Staff.FirstName" class="text-danger"></span>
+        <span asp-validation-for="Staff.FirstName"></span>
     </div>
 
-    <div class="mb-3">
-        <label asp-for="Staff.Email" class="form-label">Email Address</label>
-        <input asp-for="Staff.Email" class="form-control" type="email" />
-        <span asp-validation-for="Staff.Email" class="text-danger"></span>
+    <div>
+        <label asp-for="Staff.Email">Email Address</label>
+        <input asp-for="Staff.Email" type="email" />
+        <span asp-validation-for="Staff.Email"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary">Create</button>
+    <button type="submit">Create</button>
 </form>
 
 <!-- Include client-side validation script partial -->

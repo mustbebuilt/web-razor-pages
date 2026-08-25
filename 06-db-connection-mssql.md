@@ -4,7 +4,7 @@
 
 While SQLite is lightweight and file-based (making it great for rapid local prototyping), production enterprise web applications often connect to **Microsoft SQL Server (MSSQL)** or **Azure SQL Database**.
 
-Entity Framework Core (EF Core) allows you to target SQL Server with minimal code changes beyond changing the provider package and connection string.
+Entity Framework Core (EF Core) allows you to target SQL Server with minimal code changes beyond changing the provider package and connection string. You can find the SQL script to create and seed the staff table in [resources/staff-mssql.sql](file:///Users/martincooper/Documents/github-demo-sites-for-modules/web-razor-pages/resources/staff-mssql.sql).
 
 ---
 
@@ -213,47 +213,46 @@ public class IndexModel : PageModel
     ViewData["Title"] = "Staff Directory (MSSQL)";
 }
 
-<div class="container mt-4">
-    <h1>Staff Directory</h1>
-    <p class="text-muted">Total Active Employees: @Model.ActiveCount</p>
+<h1>Staff Directory</h1>
+<p>Total Active Employees: @Model.ActiveCount</p>
 
-    <table class="table table-striped table-hover mt-3">
-        <thead class="table-dark">
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Department</th>
+            <th>Job Title</th>
+            <th>Salary</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var member in Model.StaffMembers)
+        {
             <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Department</th>
-                <th>Job Title</th>
-                <th>Salary</th>
-                <th>Status</th>
+                <td>@member.StaffId</td>
+                <td>@member.FirstName @member.LastName</td>
+                <td>@member.Email</td>
+                <td>@member.Department</td>
+                <td>@member.JobTitle</td>
+                <td>@member.Salary.ToString("C")</td>
+                <td>
+                    @if (member.IsActive)
+                    {
+                        <span>Active</span>
+                    }
+                    else
+                    {
+                        <span>Inactive</span>
+                    }
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var member in Model.StaffMembers)
-            {
-                <tr>
-                    <td>@member.StaffId</td>
-                    <td>@member.FirstName @member.LastName</td>
-                    <td>@member.Email</td>
-                    <td>@member.Department</td>
-                    <td>@member.JobTitle</td>
-                    <td>@member.Salary.ToString("C")</td>
-                    <td>
-                        @if (member.IsActive)
-                        {
-                            <span class="badge bg-success">Active</span>
-                        }
-                        else
-                        {
-                            <span class="badge bg-danger">Inactive</span>
-                        }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+        }
+    </tbody>
+</table>
+
 ```
 
 ---

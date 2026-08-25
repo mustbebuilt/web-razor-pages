@@ -34,6 +34,8 @@ dotnet new razor -n MyRazorApp
 
 ### Move into the Project Folder
 
+If using VS Code, reopen the folder in the terminal so the path is set to `MyRazorApp`.
+
 ```bash
 cd MyRazorApp
 ```

@@ -57,7 +57,7 @@ A minimal layout shell in `Pages/Shared/_Layout.cshtml`:
     </main>
 
     <footer>
-        <p>&copy; @DateTime.Now.Year MyRazorApp - @DateTime.Now.ToString("dd MMM yyyy")</p>
+        <p>&copy; Today's date</p>
     </footer>
 </body>
 </html>
@@ -67,12 +67,11 @@ A minimal layout shell in `Pages/Shared/_Layout.cshtml`:
 
 ## Using `asp-page` Tag Helpers for Navigation
 
-In Razor Pages, internal navigation links use the `asp-page` Tag Helper instead of hardcoded `href` paths:
+Notice the use of `asp-page` instead of `href` in the layout file above. The `asp-page` attribute is a Razor Tag Helper that is used to generate URL-encoded href attributes for navigation within a Razor Pages application.
 
 ```cshtml
 <a asp-page="/Index">Home</a>
 <a asp-page="/Staff/Index">Staff Directory</a>
-<a asp-page="/DataToViews/TempDataDemo">TempData Demo</a>
 ```
 
 ### Key Benefits of `asp-page` Tag Helpers:
@@ -86,7 +85,9 @@ In Razor Pages, internal navigation links use the `asp-page` Tag Helper instead 
 
 ### 1. Global Stylesheets (`wwwroot/css/`)
 
-Global CSS stylesheets are saved in `wwwroot/css/site.css` and linked inside the layout `<head>`:
+The easiest way to style the app is to use a global CSS stylesheet that is attached to the `_Layout.cshtml` page.
+
+Copy the provided CSS file `site.css` from the `resources` folder and place it inside `wwwroot/css/` directory.
 
 ```cshtml
 <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -99,15 +100,8 @@ Global CSS stylesheets are saved in `wwwroot/css/site.css` and linked inside the
 
 ### 2. CSS Isolation (Scoped Component Styling)
 
-CSS Isolation allows styles to be scoped strictly to a single Razor Page without affecting other pages.
-
-- **Page View**: `Pages/Index.cshtml`
-- **Scoped CSS File**: `Pages/Index.cshtml.css`
+If you want to style a page in isolation, you can use CSS Isolation. This allows styles to be scoped strictly to a single Razor Page without affecting other pages.
 
 During compilation, ASP.NET Core automatically bundles scoped styles into `[ProjectName].styles.css` (e.g. `MyMvcApp.styles.css`) and attaches unique scope attributes (e.g. `b-1234567890`) to matching elements.
 
-Link the bundle in `_Layout.cshtml`:
 
-```cshtml
-<link rel="stylesheet" href="~/MyMvcApp.styles.css" asp-append-version="true" />
-```

@@ -1,0 +1,50 @@
+@page "{id:int}"
+@model MyMvcApp.Pages.Staff.DetailsModel
+@{
+    ViewData["Title"] = $"Staff Details - {Model.Staff.FirstName} {Model.Staff.LastName}";
+}
+
+<div>
+    <h1>Staff Details</h1>
+    <p>Detailed record for @Model.Staff.FirstName @Model.Staff.LastName.</p>
+
+    <dl>
+        <dt>Staff ID</dt>
+        <dd>@Model.Staff.StaffId</dd>
+
+        <dt>Full Name</dt>
+        <dd>@Model.Staff.FirstName @Model.Staff.LastName</dd>
+
+        <dt>Email Address</dt>
+        <dd>@Model.Staff.Email</dd>
+
+        <dt>Department</dt>
+        <dd>@Model.Staff.Department</dd>
+
+        <dt>Job Title</dt>
+        <dd>@Model.Staff.JobTitle</dd>
+
+        <dt>Hire Date</dt>
+        <dd>@Model.Staff.HireDate</dd>
+
+        <dt>Salary</dt>
+        <dd>@Model.Staff.Salary.ToString("C")</dd>
+
+        <dt>Employment Status</dt>
+        <dd>
+            @if (Model.Staff.IsActive == 1)
+            {
+                <span>Active</span>
+            }
+            else
+            {
+                <span>Inactive</span>
+            }
+        </dd>
+    </dl>
+
+    <div>
+        <a asp-page="/Staff/Edit" asp-route-id="@Model.Staff.StaffId">Edit Record</a> |
+        <a asp-page="/Staff/Index">Back to Staff Directory</a>
+    </div>
+</div>

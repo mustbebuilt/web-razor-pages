@@ -4,67 +4,62 @@
     ViewData["Title"] = "Add New Staff Member";
 }
 
-<div class="row justify-content-center mt-4">
-    <div class="col-md-8">
-        <h1>Add New Staff Member</h1>
-        <p class="text-muted">Fill out the form below to create a new staff record.</p>
+<div>
+    <h1>Add New Staff Member</h1>
+    <p>Fill out the form below to create a new staff record.</p>
 
-        <form method="post" class="mt-4">
-            <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+    <form method="post">
+        <div asp-validation-summary="ModelOnly"></div>
 
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label asp-for="Staff.FirstName" class="form-label">First Name</label>
-                    <input asp-for="Staff.FirstName" class="form-control" />
-                    <span asp-validation-for="Staff.FirstName" class="text-danger"></span>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label asp-for="Staff.LastName" class="form-label">Last Name</label>
-                    <input asp-for="Staff.LastName" class="form-control" />
-                    <span asp-validation-for="Staff.LastName" class="text-danger"></span>
-                </div>
-            </div>
+        <div>
+            <label asp-for="Staff.FirstName">First Name</label>
+            <input asp-for="Staff.FirstName" />
+            <span asp-validation-for="Staff.FirstName"></span>
+        </div>
 
-            <div class="mb-3">
-                <label asp-for="Staff.Email" class="form-label">Email Address</label>
-                <input asp-for="Staff.Email" class="form-control" type="email" />
-                <span asp-validation-for="Staff.Email" class="text-danger"></span>
-            </div>
+        <div>
+            <label asp-for="Staff.LastName">Last Name</label>
+            <input asp-for="Staff.LastName" />
+            <span asp-validation-for="Staff.LastName"></span>
+        </div>
 
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label asp-for="Staff.Department" class="form-label">Department</label>
-                    <input asp-for="Staff.Department" class="form-control" />
-                    <span asp-validation-for="Staff.Department" class="text-danger"></span>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label asp-for="Staff.JobTitle" class="form-label">Job Title</label>
-                    <input asp-for="Staff.JobTitle" class="form-control" />
-                    <span asp-validation-for="Staff.JobTitle" class="text-danger"></span>
-                </div>
-            </div>
+        <div>
+            <label asp-for="Staff.Email">Email Address</label>
+            <input asp-for="Staff.Email" type="email" />
+            <span asp-validation-for="Staff.Email"></span>
+        </div>
 
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label asp-for="Staff.Salary" class="form-label">Annual Salary (£)</label>
-                    <input asp-for="Staff.Salary" class="form-control" type="number" step="0.01" />
-                    <span asp-validation-for="Staff.Salary" class="text-danger"></span>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label asp-for="Staff.IsActive" class="form-label">Status</label>
-                    <select asp-for="Staff.IsActive" class="form-select">
-                        <option value="1">Active</option>
-                        <option value="0">Inactive</option>
-                    </select>
-                </div>
-            </div>
+        <div>
+            <label asp-for="Staff.Department">Department</label>
+            <input asp-for="Staff.Department" />
+            <span asp-validation-for="Staff.Department"></span>
+        </div>
 
-            <div class="d-flex gap-2 mt-3">
-                <button type="submit" class="btn btn-primary">Create Staff Member</button>
-                <a asp-page="/Staff/Index" class="btn btn-outline-secondary">Cancel</a>
-            </div>
-        </form>
-    </div>
+        <div>
+            <label asp-for="Staff.JobTitle">Job Title</label>
+            <input asp-for="Staff.JobTitle" />
+            <span asp-validation-for="Staff.JobTitle"></span>
+        </div>
+
+        <div>
+            <label asp-for="Staff.Salary">Annual Salary (£)</label>
+            <input asp-for="Staff.Salary" type="number" step="0.01" />
+            <span asp-validation-for="Staff.Salary"></span>
+        </div>
+
+        <div>
+            <label asp-for="Staff.IsActive">Status</label>
+            <select asp-for="Staff.IsActive">
+                <option value="1">Active</option>
+                <option value="0">Inactive</option>
+            </select>
+        </div>
+
+        <div>
+            <button type="submit">Create Staff Member</button>
+            <a asp-page="/Staff/Index">Cancel</a>
+        </div>
+    </form>
 </div>
 
 @section Scripts {

@@ -4,7 +4,7 @@
 
 Entity Framework Core (EF Core) is an Object-Relational Mapper (ORM) that enables .NET developers to interact with databases using strongly-typed C# objects.
 
-This guide demonstrates connecting an SQLite database (`data/staff.db`) to an ASP.NET Core Razor Pages application.
+This guide demonstrates connecting an SQLite database (`data/staff.db`) to an ASP.NET Core Razor Pages application. You can find the SQL script to create and seed the staff table in [resources/staff-sqlite.sql](file:///Users/martincooper/Documents/github-demo-sites-for-modules/web-razor-pages/resources/staff-sqlite.sql).
 
 ---
 
@@ -155,47 +155,46 @@ public class IndexModel : PageModel
     ViewData["Title"] = "Staff Directory";
 }
 
-<div class="container mt-4">
-    <h1>Staff Directory</h1>
-    <p class="text-muted">Total Active Employees: @Model.ActiveCount</p>
+<h1>Staff Directory</h1>
+<p>Total Active Employees: @Model.ActiveCount</p>
 
-    <table class="table table-striped table-hover mt-3">
-        <thead class="table-dark">
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Department</th>
+            <th>Job Title</th>
+            <th>Salary</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var member in Model.StaffMembers)
+        {
             <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Department</th>
-                <th>Job Title</th>
-                <th>Salary</th>
-                <th>Status</th>
+                <td>@member.StaffId</td>
+                <td>@member.FirstName @member.LastName</td>
+                <td>@member.Email</td>
+                <td>@member.Department</td>
+                <td>@member.JobTitle</td>
+                <td>@member.Salary.ToString("C")</td>
+                <td>
+                    @if (member.IsActive == 1)
+                    {
+                        <span>Active</span>
+                    }
+                    else
+                    {
+                        <span>Inactive</span>
+                    }
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var member in Model.StaffMembers)
-            {
-                <tr>
-                    <td>@member.StaffId</td>
-                    <td>@member.FirstName @member.LastName</td>
-                    <td>@member.Email</td>
-                    <td>@member.Department</td>
-                    <td>@member.JobTitle</td>
-                    <td>@member.Salary.ToString("C")</td>
-                    <td>
-                        @if (member.IsActive == 1)
-                        {
-                            <span class="badge bg-success">Active</span>
-                        }
-                        else
-                        {
-                            <span class="badge bg-danger">Inactive</span>
-                        }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+        }
+    </tbody>
+</table>
+
 ```
 
 ---

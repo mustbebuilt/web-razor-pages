@@ -1,5 +1,7 @@
 # Passing Data in Razor Pages
 
+One important feature of all server side applications is the ability to pass data between server-side logic and client-side presentation. 
+
 ## Data Passing Mechanisms in Razor Pages
 
 In ASP.NET Core Razor Pages, data flows between server-side logic (`PageModel`) and client-side presentation (`.cshtml` view). 

@@ -4,7 +4,7 @@
 
 Entity Framework Core (EF Core) is an Object-Relational Mapper (ORM) that enables .NET developers to interact with databases using strongly-typed C# objects.
 
-This guide demonstrates connecting an SQLite database (`data/staff.db`) to an ASP.NET Core Razor Pages application. You can find the SQL script to create and seed the staff table in [resources/staff-sqlite.sql](file:///Users/martincooper/Documents/github-demo-sites-for-modules/web-razor-pages/resources/staff-sqlite.sql).
+This guide demonstrates connecting an SQLite database (`data/Staff.db`) to an ASP.NET Core Razor Pages application. You can find the SQL script to create and seed the staff table in [resources/staff-sqlite.sql](/resources/staff-sqlite.sql).
 
 ---
 

@@ -4,7 +4,7 @@
 
 While SQLite is lightweight and file-based (making it great for rapid local prototyping), production enterprise web applications often connect to **Microsoft SQL Server (MSSQL)** or **Azure SQL Database**.
 
-Entity Framework Core (EF Core) allows you to target SQL Server with minimal code changes beyond changing the provider package and connection string. You can find the SQL script to create and seed the staff table in [resources/staff-mssql.sql](file:///Users/martincooper/Documents/github-demo-sites-for-modules/web-razor-pages/resources/staff-mssql.sql).
+Entity Framework Core (EF Core) allows you to target SQL Server with minimal code changes beyond changing the provider package and connection string. You can find the SQL script to create and seed the staff table in [resources/staff-mssql.sql](/resources/staff-mssql.sql).
 
 ---
 

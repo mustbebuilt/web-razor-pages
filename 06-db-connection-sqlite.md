@@ -201,5 +201,5 @@ public class IndexModel : PageModel
 
 ## Alternative Database Option
 
-For connecting to Microsoft SQL Server instead of SQLite, see the [MSSQL Database Integration Guide](file:///Users/martincooper/Documents/github-demo-sites-for-modules/web-razor-pages/06-db-connection-mssql.md).
+For connecting to Microsoft SQL Server instead of SQLite, see the [MSSQL Database Integration Guide](file:///Users/martincooper/Documents/github-demo-sites-for-modules/web-razor-pages/07-db-connection-mssql.md).
 

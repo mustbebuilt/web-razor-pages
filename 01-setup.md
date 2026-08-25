@@ -1,11 +1,11 @@
-# MyRazorApp Quick Start & Setup
+# MyRazorApp Setup & Quick Start
 
 This quick start guide sets up a web application using the ASP.NET Core **Razor Pages** template. The aim of this guide is to:
 
-- Create and configure a basic Razor Pages application.
-- Review the file structure of a Razor Pages application (`Pages/`, `wwwroot/`, `Program.cs`).
-- Edit the Layout template and customize HTML structure and CSS styling.
-- Add static files to `wwwroot`.
+- Create and configure a basic Razor Pages application (`MyRazorApp`).
+- Review the structure of a Razor Pages application (`Pages/`, `wwwroot/`, `Program.cs`).
+- Customize the Layout template and UI structure.
+- Add static files to the `wwwroot` folder.
 - Add dynamic Razor Pages with C# code-behind `PageModel` classes.
 - Pass data between `PageModel` handlers and Razor view templates.
 
@@ -23,16 +23,15 @@ This tutorial requires:
 
 ## Project Creation and First Run
 
-### Create the Application
+### Step 1. Create the Application
 
 To create a starter Razor Pages project in Visual Studio Code, open your terminal and run:
 
 ```bash
 dotnet new razor -n MyRazorApp
 ```
-*(Alternatively, `dotnet new webapp -n MyRazorApp` creates the same Razor Pages project structure).*
 
-### Move into the Project Folder
+### Step 2. Move into the Project Folder
 
 If using VS Code, reopen the folder in the terminal so the path is set to `MyRazorApp`.
 
@@ -40,7 +39,7 @@ If using VS Code, reopen the folder in the terminal so the path is set to `MyRaz
 cd MyRazorApp
 ```
 
-### Build and Run
+### Step 3. Build and Run
 
 ```bash
 dotnet build
@@ -66,7 +65,7 @@ The default application consists of standard pages such as the Home (`Index`) pa
 
 Navigate to the `Pages` directory in the application. Notice files like `Index.cshtml` and `Privacy.cshtml`. 
 
-Each Razor Page typically consists of two paired files:
+Each Razor Page consists of two paired files:
 1. **`.cshtml` file**: The presentation view template combining HTML and Razor syntax.
 2. **`.cshtml.cs` file**: The C# code-behind `PageModel` class handling HTTP requests (`OnGet()`, `OnPost()`) and holding page properties.
 
@@ -95,17 +94,24 @@ In Razor Pages, request handling and page routing are configured in `Program.cs`
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
 
-// Register Razor Pages services
+// Add services to the container.
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error");
+    app.UseHsts();
+}
 
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthorization();
 
 app.MapStaticAssets();
-app.MapRazorPages(); // Maps incoming URLs to matching Razor Pages under the Pages/ directory
+app.MapRazorPages();
 
 app.Run();
 ```

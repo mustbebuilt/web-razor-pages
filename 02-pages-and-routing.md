@@ -2,12 +2,12 @@
 
 ## The PageModel and Handler Results
 
-In ASP.NET Core Razor Pages, each page consists of a Razor view (`.cshtml`) paired with a `PageModel` code-behind file (`.cshtml.cs`). 
+In ASP.NET Core Razor Pages, each page consists of a Razor view (`.cshtml`) paired with a `PageModel` code-behind file (`.cshtml.cs`).
 
 Instead of routing requests through central controllers, Razor Pages uses **Handler Methods** inside the `PageModel` to process HTTP requests. Common handler method return types include `IActionResult`:
 
 - `Page()`: Renders and returns the current Razor Page view.
-- `RedirectToPage()`: Redirects the browser to another Razor Page (or reloads the current page after a POST operation).
+- `RedirectToPage()`: Redirects the browser to another Razor Page.
 - `NotFound()`: Returns a standard HTTP 404 response.
 - `Content()`: Returns plain text or serialized content directly.
 
@@ -107,30 +107,8 @@ public class IndexModel : PageModel
 
 ---
 
-## Custom Route Parameters
-
-Razor Pages allows custom URL route patterns directly in the `@page` directive.
-
-For example, to match `/Staff/Details/5`:
-
-```cshtml
-@page "{id:int?}"
-@model StaffDetailsModel
-```
-
-Inside `StaffDetailsModel.cshtml.cs`:
-
-```csharp
-public void OnGet(int? id)
-{
-    // Access the route parameter directly in the handler method
-}
-```
-
----
-
-## Why Choose Razor Pages Over MVC for Page-Centric Apps?
+## Why Choose Razor Pages for Page-Centric Apps?
 
 1. **Co-location**: UI markup (`.cshtml`) and request handling logic (`.cshtml.cs`) live right next to each other.
-2. **Simplified Routing**: No need to maintain route mapping tables or jumping between distant `Controllers/` and `Views/` folders.
+2. **Simplified Routing**: No need to maintain route mapping tables or jump between separate controller and view folders.
 3. **Clean Handler Operations**: Clear separation of GET and POST interactions per page (`OnGet()`, `OnPost()`).

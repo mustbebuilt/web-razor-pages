@@ -1,0 +1,51 @@
+@page
+@model MyRazorApp.Pages.Staff.IndexModel
+@{
+    ViewData["Title"] = "Staff Directory";
+}
+
+<div>
+    <h1>Staff Directory</h1>
+    <p>Total Active Employees: @Model.ActiveCount</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Department</th>
+                <th>Job Title</th>
+                <th>Salary</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var member in Model.StaffMembers)
+            {
+                <tr>
+                    <td>@member.StaffId</td>
+                    <td>@member.FirstName @member.LastName</td>
+                    <td>@member.Email</td>
+                    <td>@member.Department</td>
+                    <td>@member.JobTitle</td>
+                    <td>@member.Salary.ToString("C", new System.Globalization.CultureInfo("en-GB"))</td>
+                    <td>
+                        @if (member.IsActive == 1)
+                        {
+                            <span class="status-active">Active</span>
+                        }
+                        else
+                        {
+                            <span class="status-inactive">Inactive</span>
+                        }
+                    </td>
+                    <td>
+                        <a asp-page="/Staff/Details" asp-route-id="@member.StaffId">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

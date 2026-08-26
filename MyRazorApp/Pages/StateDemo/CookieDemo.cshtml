@@ -1,0 +1,97 @@
+@page
+@model MyRazorApp.Pages.StateDemo.CookieDemoModel
+@{
+    ViewData["Title"] = "HTTP Cookies & Theme Demo";
+}
+
+<div>
+    <p><a asp-page="/StateDemo/Index">&larr; Back to State Management Hub</a></p>
+
+    <h1>
+        <span class="badge badge-cookie">HTTP Cookies</span>
+        Theme &amp; Persistence Demo
+    </h1>
+    <p>This page demonstrates writing and reading HTTP Cookies via <code>Response.Cookies.Append(...)</code> and <code>Request.Cookies[...]</code> to store client-side preferences like active UI Theme.</p>
+
+    @if (!string.IsNullOrEmpty(Model.FlashMessage))
+    {
+        <div class="alert-success">
+            <h4>@Model.FlashMessage</h4>
+            <p>The cookie was sent back to your browser in the <code>Set-Cookie</code> response header. Look at the page background and card styling!</p>
+        </div>
+    }
+
+    <!-- Theme Switcher Form -->
+    <div class="card-box">
+        <h3 class="card-title">Select Dynamic UI Theme (Saved via Cookie)</h3>
+
+        <form method="post" asp-page-handler="SetTheme">
+            <div class="theme-grid">
+                <label class="theme-tile tile-light">
+                    <input type="radio" asp-for="SelectedTheme" value="light" /> Light
+                </label>
+                <label class="theme-tile tile-dark">
+                    <input type="radio" asp-for="SelectedTheme" value="dark" /> Dark
+                </label>
+                <label class="theme-tile tile-sepia">
+                    <input type="radio" asp-for="SelectedTheme" value="sepia" /> Sepia
+                </label>
+                <label class="theme-tile tile-ocean">
+                    <input type="radio" asp-for="SelectedTheme" value="ocean" /> Ocean
+                </label>
+            </div>
+
+            <div class="checkbox-row">
+                <label class="checkbox-label">
+                    <input type="checkbox" asp-for="IsPersistent" /> Persistent Cookie (7-day Expiry date vs Session Cookie)
+                </label>
+            </div>
+
+            <div class="action-row">
+                <button type="submit" class="btn btn-primary">Save Theme Cookie &amp; Apply UI State</button>
+            </div>
+        </form>
+
+        <form method="post" asp-page-handler="DeleteCookie" style="margin-top: 14px;">
+            <button type="submit" class="btn btn-delete">Delete 'UserTheme' Cookie</button>
+        </form>
+    </div>
+
+    <!-- Live Cookie Inspector -->
+    <div class="http-inspector">
+        <h3>Live Browser HTTP Cookie Inspector</h3>
+        <div><strong>Current Request HTTP Header:</strong></div>
+        <div class="url-display" style="margin-top: 6px;">
+            Cookie: @(string.Join("; ", Model.AllCookies.Select(c => $"{c.Key}={c.Value}")))
+        </div>
+
+        <div class="inspector-section">
+            <strong>Active Cookies Parsed in Request.Cookies:</strong>
+            <div class="param-list" style="margin-top: 8px;">
+                @foreach (var cookie in Model.AllCookies)
+                {
+                    <div class="param-row">
+                        <div class="param-key" style="color: #f472b6;">CookieKey: @cookie.Key</div>
+                        <div class="param-val">= "@cookie.Value"</div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Educational Explanation Box -->
+    <div class="info-box">
+        <h4>How HTTP Cookies Work in ASP.NET Core Razor Pages</h4>
+        <ul>
+            <li><strong>Setting a Cookie:</strong> Use <code>Response.Cookies.Append("Key", "Value", options)</code>. ASP.NET Core sends a <code>Set-Cookie: Key=Value</code> HTTP header in the response.</li>
+            <li><strong>Reading a Cookie:</strong> Use <code>Request.Cookies["Key"]</code>. The browser automatically sends matching cookies in every subsequent HTTP request's <code>Cookie</code> header.</li>
+            <li><strong>Deleting a Cookie:</strong> Use <code>Response.Cookies.Delete("Key")</code>, which sends a <code>Set-Cookie</code> header with an expired timestamp, instructing the browser to delete it.</li>
+            <li><strong>Session vs Persistent Cookies:</strong>
+                <ul>
+                    <li><strong>Session Cookie (No Expiry):</strong> Temporary cookie stored in memory until the browser is closed.</li>
+                    <li><strong>Persistent Cookie (Expires / Max-Age set):</strong> Saved to the device's disk until the expiration date.</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>

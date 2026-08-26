@@ -1,0 +1,102 @@
+/* Scoped CSS for RouteDemo.cshtml */
+.step-description {
+    margin-bottom: 10px;
+}
+
+.button-bar {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.url-subtext {
+    margin-top: 6px;
+}
+
+.inspector-section {
+    margin-top: 14px;
+}
+
+.inspector-row-space {
+    margin-top: 10px;
+}
+
+.purple-key {
+    color: #c084fc;
+}
+
+.teal-key {
+    color: #2dd4bf;
+}
+
+.subtext-hint {
+    color: #94a3b8;
+    font-size: 0.8rem;
+}
+
+.entity-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    margin-top: 24px;
+}
+
+.entity-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.entity-title {
+    margin: 0;
+}
+
+.entity-subtitle {
+    margin: 4px 0 0 0;
+}
+
+.tab-section {
+    margin-bottom: 20px;
+}
+
+.tab-title {
+    margin-bottom: 8px;
+}
+
+.tab-button-bar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    padding: 6px 14px;
+    font-size: 0.85rem;
+}
+
+.tab-panel {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 16px;
+    border-radius: var(--radius-sm);
+}
+
+.info-box-top-margin {
+    margin-top: 28px;
+}
+
+.clean-table {
+    width: 100%;
+    border: none;
+    box-shadow: none;
+    margin-top: 10px;
+}
+
+.top-margin-16 {
+    margin-top: 16px;
+}

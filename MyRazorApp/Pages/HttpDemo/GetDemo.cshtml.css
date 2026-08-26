@@ -1,0 +1,41 @@
+/* Scoped CSS for GetDemo.cshtml */
+.filter-field {
+    flex: 1;
+    min-width: 150px;
+}
+
+.filter-field-keyword {
+    flex: 1;
+    min-width: 180px;
+}
+
+.filter-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.filter-actions {
+    align-self: flex-end;
+}
+
+.inspector-url {
+    margin-top: 8px;
+}
+
+.inspector-subtitle {
+    margin-top: 12px;
+    font-weight: 600;
+    color: #38bdf8;
+}
+
+.inspector-empty {
+    color: #94a3b8;
+    font-style: italic;
+    margin-top: 4px;
+}

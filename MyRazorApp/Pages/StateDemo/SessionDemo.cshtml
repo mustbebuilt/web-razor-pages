@@ -1,0 +1,103 @@
+@page
+@model MyRazorApp.Pages.StateDemo.SessionDemoModel
+@{
+    ViewData["Title"] = "ASP.NET Core Session State Demo";
+}
+
+<div>
+    <p><a asp-page="/StateDemo/Index">&larr; Back to State Management Hub</a></p>
+
+    <h1>
+        <span class="badge badge-session">ASP.NET Core Session</span>
+        Server-Side State Demo
+    </h1>
+    <p>This page demonstrates storing temporary, per-user state on the server via <code>HttpContext.Session.SetString(...)</code>, <code>SetInt32(...)</code>, and <code>GetString(...)</code>.</p>
+
+    @if (!string.IsNullOrEmpty(Model.FlashMessage))
+    {
+        <div class="alert-success">
+            <h4>@Model.FlashMessage</h4>
+            <p>Server-side session state updated! Data is stored safely in server memory indexed by your Session ID.</p>
+        </div>
+    }
+
+    <!-- 1. Session User Nickname -->
+    <div class="card-box">
+        <h3 class="card-title">1. Set Session User Nickname</h3>
+        <p>Current Session User: <strong>@Model.CurrentSessionUser</strong> | Page Refresh Count in Session: <strong>@Model.VisitCount</strong></p>
+
+        <form method="post" asp-page-handler="SetUser" class="form-row">
+            <input type="text" asp-for="UserNickname" placeholder="Enter student nickname (e.g. Jordan)" class="search-input full-width" />
+            <button type="submit" class="btn btn-primary">Set Session User</button>
+        </form>
+    </div>
+
+    <!-- 2. Session Shopping Cart -->
+    <div class="card-box">
+        <h3 class="card-title">2. Add Item to Server Session Cart</h3>
+
+        <form method="post" asp-page-handler="AddToCart" class="form-row">
+            <input type="text" asp-for="NewCartItem" placeholder="e.g. ASP.NET Core Course Pass" class="search-input full-width" />
+            <button type="submit" class="btn btn-primary">Add Item to Session</button>
+        </form>
+
+        <div class="cart-section">
+            <h4>Items in Server Session Cart (@Model.CartItems.Count):</h4>
+            @if (!Model.CartItems.Any())
+            {
+                <p style="color: var(--text-muted); font-style: italic;">Your session cart is empty.</p>
+            }
+            else
+            {
+                <ul class="cart-list">
+                    @foreach (var item in Model.CartItems)
+                    {
+                        <li><strong>@item</strong></li>
+                    }
+                </ul>
+            }
+        </div>
+
+        <form method="post" asp-page-handler="ClearSession" style="margin-top: 20px;">
+            <button type="submit" class="btn btn-clear">Clear Entire Server Session</button>
+        </form>
+    </div>
+
+    <!-- Live Session Inspector -->
+    <div class="http-inspector">
+        <h3>Live ASP.NET Core Session Memory Inspector</h3>
+        <div><strong>Session Identifier (ID):</strong> <code>@Model.SessionId</code></div>
+        <div class="url-display" style="margin-top: 6px;">
+            Session Cookie Sent in Request Header: <code>.AspNetCore.Session=@Model.SessionId</code>
+        </div>
+
+        <div class="inspector-section">
+            <strong>Active Keys Stored in Server Session Memory:</strong>
+            <div class="param-list" style="margin-top: 8px;">
+                <div class="param-row">
+                    <div class="param-key key-color">VisitCount (Int32)</div>
+                    <div class="param-val">= @Model.VisitCount</div>
+                </div>
+                <div class="param-row">
+                    <div class="param-key key-color">SessionUser (String)</div>
+                    <div class="param-val">= "@Model.CurrentSessionUser"</div>
+                </div>
+                <div class="param-row">
+                    <div class="param-key key-color">SessionCart (String)</div>
+                    <div class="param-val">= "@(string.Join("|", Model.CartItems))"</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Educational Explanation Box -->
+    <div class="info-box">
+        <h4>How ASP.NET Core Session State Works</h4>
+        <ul>
+            <li><strong>The Session Cookie:</strong> ASP.NET Core issues a single encrypted Session ID cookie (named <code>.AspNetCore.Session</code>) to the client browser.</li>
+            <li><strong>Server-Side Storage:</strong> The actual data values (shopping cart, user session objects) remain strictly on the web server memory (or distributed cache). The client browser cannot view or tamper with the session data!</li>
+            <li><strong>Expiration / Idle Timeout:</strong> In <code>Program.cs</code>, session timeout is configured via <code>options.IdleTimeout = TimeSpan.FromMinutes(30)</code>. If the user is inactive for 30 minutes, the session is discarded.</li>
+            <li><strong>Clearing Session:</strong> Call <code>HttpContext.Session.Clear()</code> to flush all keys for the current user's session.</li>
+        </ul>
+    </div>
+</div>

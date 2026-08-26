@@ -1,0 +1,74 @@
+@page
+@model MyRazorApp.Pages.StateDemo.IndexModel
+@{
+    ViewData["Title"] = "Cookies & Session State Management";
+}
+
+<div>
+    <h1>Cookies &amp; Session State Management</h1>
+    <p>Explore interactive demonstrations showing client-side HTTP Cookies vs server-side ASP.NET Core Session state.</p>
+
+    <div class="demo-grid">
+        <div class="demo-card">
+            <div>
+                <span class="badge badge-cookie">Client-Side State</span>
+                <span class="badge badge-get">HTTP Cookies</span>
+            </div>
+            <h2>1. HTTP Cookies Demo</h2>
+            <p>Demonstrates client-side state stored in the user's browser. Set UI color themes (Light, Dark, Sepia, Ocean) that persist across browser restarts and dynamically restyle the entire site!</p>
+            <p><strong>Current Active Theme Cookie:</strong> <code>@Model.ActiveCookieTheme</code></p>
+            <a asp-page="/StateDemo/CookieDemo" class="btn btn-primary">Open Cookies &amp; Theme Demo &rarr;</a>
+        </div>
+
+        <div class="demo-card">
+            <div>
+                <span class="badge badge-session">Server-Side State</span>
+                <span class="badge badge-post">ASP.NET Session</span>
+            </div>
+            <h2>2. Session State Demo</h2>
+            <p>Demonstrates server-side state stored in ASP.NET Core memory tied to a Session ID cookie. Store temporary cart items, user nicknames, and visit counters.</p>
+            <p><strong>Active Session User:</strong> <code>@(Model.ActiveSessionUser ?? "Guest")</code> | <strong>Cart Items:</strong> <code>@Model.ActiveSessionCartCount</code></p>
+            <a asp-page="/StateDemo/SessionDemo" class="btn btn-primary">Open Session State Demo &rarr;</a>
+        </div>
+    </div>
+
+    <div class="info-box">
+        <h4>State Management Comparison: Cookies vs Session</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>Feature</th>
+                    <th>HTTP Cookies</th>
+                    <th>ASP.NET Core Session</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Storage Location</strong></td>
+                    <td>Client browser (sent in HTTP Request header)</td>
+                    <td>Server memory (identified by a Session ID cookie)</td>
+                </tr>
+                <tr>
+                    <td><strong>Typical Use Cases</strong></td>
+                    <td>User UI theme preferences, "Remember Me" tokens</td>
+                    <td>Shopping carts, multi-step checkout forms, logged-in user state</td>
+                </tr>
+                <tr>
+                    <td><strong>Persistence</strong></td>
+                    <td>Can persist for days/years via expiry dates</td>
+                    <td>Temporary (expires after idle timeout, e.g. 20-30 mins)</td>
+                </tr>
+                <tr>
+                    <td><strong>Data Size Limit</strong></td>
+                    <td>~4 KB per cookie limit</td>
+                    <td>Larger objects (stored on server memory)</td>
+                </tr>
+                <tr>
+                    <td><strong>Tamper Sensitivity</strong></td>
+                    <td>User can view &amp; edit cookie values in devtools</td>
+                    <td>Secure on server (user only holds an encrypted Session ID)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

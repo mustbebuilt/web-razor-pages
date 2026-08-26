@@ -1,0 +1,86 @@
+/* Scoped CSS for PostDemo.cshtml */
+.flash-details {
+    margin-top: 10px;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+}
+
+.flash-hint {
+    margin-top: 8px;
+    font-size: 0.85rem;
+    font-style: italic;
+}
+
+.form-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+}
+
+.form-title {
+    margin-top: 0;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.form-field {
+    margin-bottom: 16px;
+}
+
+.form-field-large {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.validation-error {
+    font-size: 0.8rem;
+}
+
+.btn-post {
+    background-color: #d97706;
+    border-color: #b45309;
+}
+
+.inspector-url {
+    margin-top: 8px;
+}
+
+.url-hint {
+    color: #94a3b8;
+    font-size: 0.8rem;
+}
+
+.inspector-section {
+    margin-top: 14px;
+}
+
+.code-payload {
+    margin-top: 6px;
+    background: #1e293b;
+    color: #fbbf24;
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+}
+
+.prg-steps {
+    margin-top: 6px;
+    margin-bottom: 0;
+}

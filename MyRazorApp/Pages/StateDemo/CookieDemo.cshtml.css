@@ -1,0 +1,71 @@
+/* Scoped CSS for CookieDemo.cshtml */
+.card-box {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 24px;
+}
+
+.card-title {
+    margin-top: 0;
+}
+
+.theme-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.theme-tile {
+    border: 2px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.theme-tile input {
+    margin-right: 6px;
+}
+
+.tile-light { background-color: #ffffff; color: #0f172a; }
+.tile-dark { background-color: #0f172a; color: #f8fafc; border-color: #334155; }
+.tile-sepia { background-color: #fbf0d9; color: #433422; border-color: #e2d1a6; }
+.tile-ocean { background-color: #ecfeff; color: #083344; border-color: #a5f3fc; }
+
+.theme-tile:hover {
+    transform: scale(1.03);
+}
+
+.checkbox-row {
+    margin-bottom: 20px;
+}
+
+.checkbox-label {
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.action-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.btn-delete {
+    background-color: #ef4444;
+    color: #ffffff;
+}
+
+.btn-delete:hover {
+    background-color: #dc2626;
+    color: #ffffff;
+}
+
+.inspector-section {
+    margin-top: 14px;
+}

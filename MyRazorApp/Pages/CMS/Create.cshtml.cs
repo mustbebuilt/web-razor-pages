@@ -4,11 +4,11 @@ using MyRazorApp.Data;
 
 namespace MyRazorApp.Pages.CMS;
 
-public class CreateModel : PageModel
+public class CreateModel : CmsPageModel
 {
     private readonly ApplicationDbContext _context;
 
-    public CreateModel(ApplicationDbContext context)
+    public CreateModel(ApplicationDbContext context, CmsAuthentication authentication) : base(authentication)
     {
         _context = context;
     }

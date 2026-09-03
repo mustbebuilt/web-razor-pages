@@ -5,11 +5,11 @@ using MyRazorApp.Models;
 
 namespace MyRazorApp.Pages.CMS;
 
-public class IndexModel : PageModel
+public class IndexModel : CmsPageModel
 {
     private readonly ApplicationDbContext _context;
 
-    public IndexModel(ApplicationDbContext context)
+    public IndexModel(ApplicationDbContext context, CmsAuthentication authentication) : base(authentication)
     {
         _context = context;
     }

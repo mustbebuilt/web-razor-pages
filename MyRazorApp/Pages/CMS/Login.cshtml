@@ -1,0 +1,20 @@
+@page
+@model MyRazorApp.Pages.CMS.LoginModel
+@{
+    ViewData["Title"] = "CMS Login";
+}
+
+<h1>CMS Login</h1>
+<p>Enter the administrator password to manage staff records.</p>
+
+<form method="post">
+    <input type="hidden" asp-for="ReturnUrl" />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-field">
+        <label asp-for="Password" class="form-label"></label>
+        <input asp-for="Password" type="password" class="search-input full-width" autocomplete="current-password"
+               autofocus />
+        <span asp-validation-for="Password" class="text-danger validation-error"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Sign in</button>
+</form>

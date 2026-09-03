@@ -12,7 +12,12 @@
     <div class="alert-success">@Model.Message</div>
 }
 
-<p><a asp-page="Create" class="btn btn-primary">Add staff member</a></p>
+<p>
+    <a asp-page="Create" class="btn btn-primary">Add staff member</a>
+    <form method="post" asp-page="Logout" style="display: inline;">
+        <button type="submit" class="btn btn-secondary">Sign out</button>
+    </form>
+</p>
 
 @if (!Model.StaffMembers.Any())
 {

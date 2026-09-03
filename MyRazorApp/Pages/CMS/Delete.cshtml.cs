@@ -6,11 +6,11 @@ using MyRazorApp.Models;
 
 namespace MyRazorApp.Pages.CMS;
 
-public class DeleteModel : PageModel
+public class DeleteModel : CmsPageModel
 {
     private readonly ApplicationDbContext _context;
 
-    public DeleteModel(ApplicationDbContext context)
+    public DeleteModel(ApplicationDbContext context, CmsAuthentication authentication) : base(authentication)
     {
         _context = context;
     }

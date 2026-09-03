@@ -5,11 +5,11 @@ using MyRazorApp.Data;
 
 namespace MyRazorApp.Pages.CMS;
 
-public class EditModel : PageModel
+public class EditModel : CmsPageModel
 {
     private readonly ApplicationDbContext _context;
 
-    public EditModel(ApplicationDbContext context)
+    public EditModel(ApplicationDbContext context, CmsAuthentication authentication) : base(authentication)
     {
         _context = context;
     }

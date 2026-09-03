@@ -138,7 +138,38 @@ public class StaffInput
 
 ---
 
-## 3. Data Annotations Explained
+## 3. Why is the Parameterless Constructor Necessary?
+
+Notice that `StaffInput` defines two constructors:
+```csharp
+// 1. Parameterless constructor
+public StaffInput() { }
+
+// 2. Parameterized constructor
+public StaffInput(Models.Staff staff)
+{
+    // ...
+}
+```
+
+### Would `StaffInput` work without the parameterless constructor?
+
+**No.** If you define the parameterized constructor `StaffInput(Models.Staff staff)` and omit the parameterless constructor `StaffInput() { }`, model binding on HTTP `POST` requests will break.
+
+### How Model Binding and C# Constructors Interact:
+
+1. **Default C# Constructor Rule**: In C#, if you do *not* write any constructor in a class, the compiler automatically generates a hidden default parameterless constructor for you.
+2. **The Override**: The moment you add *any* constructor with parameters (such as `StaffInput(Models.Staff staff)` for the Edit page), the C# compiler **stops** providing the automatic parameterless constructor.
+3. **Model Binder Instantiation**: During an HTTP `POST` submission (e.g. creating or editing a record), ASP.NET Core's Model Binder must instantiate a new `StaffInput` object before it can populate its properties from the incoming form fields. It relies on a public parameterless constructor (via reflection / `Activator.CreateInstance`) to do this.
+4. **What happens if omitted?**: If the parameterless constructor is missing, the model binder cannot instantiate `StaffInput`, causing an `InvalidOperationException` at runtime:
+   > *"Could not create an instance of type 'MyRazorApp.Pages.CMS.StaffInput'. Model bound complex types must have a parameterless constructor."*
+
+> [!IMPORTANT]
+> Whenever you add custom constructors to an Input Model or ViewModel in ASP.NET Core, always include an explicit parameterless constructor `public MyModel() { }` so the Model Binder can instantiate it during POST requests.
+
+---
+
+## 4. Data Annotations Explained
 
 Data Annotations (`System.ComponentModel.DataAnnotations`) declare validation rules and UI metadata directly on C# properties:
 
@@ -153,7 +184,7 @@ Data Annotations (`System.ComponentModel.DataAnnotations`) declare validation ru
 
 ---
 
-## 4. Entity Mapping Helpers
+## 5. Entity Mapping Helpers
 
 `StaffInput` includes two essential mapping methods to bridge the gap between user input and Entity Framework Core:
 

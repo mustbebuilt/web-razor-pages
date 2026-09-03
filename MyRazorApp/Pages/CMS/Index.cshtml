@@ -1,0 +1,49 @@
+@page
+@model MyRazorApp.Pages.CMS.IndexModel
+@{
+    ViewData["Title"] = "Staff CMS";
+}
+
+<h1>Staff CMS</h1>
+<p>Create, update, and remove staff records.</p>
+
+@if (!string.IsNullOrEmpty(Model.Message))
+{
+    <div class="alert-success">@Model.Message</div>
+}
+
+<p><a asp-page="Create" class="btn btn-primary">Add staff member</a></p>
+
+@if (!Model.StaffMembers.Any())
+{
+    <p>No staff records are available.</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var member in Model.StaffMembers)
+            {
+                <tr>
+                    <td>@member.FirstName @member.LastName</td>
+                    <td>@member.Department</td>
+                    <td>@member.Email</td>
+                    <td>@(member.IsActive == 1 ? "Active" : "Inactive")</td>
+                    <td>
+                        <a asp-page="Edit" asp-route-id="@member.StaffId">Edit</a> |
+                        <a asp-page="Delete" asp-route-id="@member.StaffId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

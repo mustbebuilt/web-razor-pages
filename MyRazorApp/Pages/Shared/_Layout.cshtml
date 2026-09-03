@@ -1,18 +1,26 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - MyRazorApp</title>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/MyRazorApp.styles.css" asp-append-version="true" />
 </head>
-<body>
+@{
+    var activeTheme = Context.Request.Cookies["UserTheme"]?.ToLower() ?? "light";
+    var bodyClass = activeTheme != "light" ? $"theme-{activeTheme}" : "";
+}
+<body class="@bodyClass">
     <header>
         <nav>
             <ul>
                 <li><a asp-page="/Index">Home</a></li>
                 <li><a asp-page="/News">News</a></li>
                 <li><a asp-page="/Staff/Index">Staff</a></li>
+                <li><a asp-page="/CMS/Index">Staff CMS</a></li>
+                <li><a asp-page="/HttpDemo/Index">GET vs POST Demos</a></li>
+                <li><a asp-page="/StateDemo/Index">Cookies &amp; Session</a></li>
                 <li><a asp-page="/Privacy">Privacy</a></li>
             </ul>
         </nav>

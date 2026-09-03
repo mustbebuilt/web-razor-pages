@@ -1,0 +1,14 @@
+@page
+@model MyRazorApp.Pages.CMS.CreateModel
+@{
+    ViewData["Title"] = "Add Staff Member";
+}
+
+<h1>Add Staff Member</h1>
+<p>Enter the details for a new staff record.</p>
+
+<form method="post">
+    <partial name="_StaffForm" model="Model.Input" />
+    <button type="submit" class="btn btn-primary">Create record</button>
+    <a asp-page="Index">Cancel</a>
+</form>

@@ -6,9 +6,25 @@
 
 <div>
     <h1>Welcome to MyRazorApp</h1>
-    <p>Welcome to the staff management system demo.</p>
+    <p>Welcome to the web development and Razor Pages interactive learning demo suite.</p>
 
-    <p>
-        <a asp-page="/Staff/Index">Browse Staff Directory &rarr;</a>
-    </p>
+    <div class="demo-grid">
+        <div class="demo-card">
+            <h2>Staff Directory</h2>
+            <p>Explore employee records with search filtering and details view.</p>
+            <a asp-page="/Staff/Index" class="btn btn-primary">Browse Staff Directory &rarr;</a>
+        </div>
+
+        <div class="demo-card">
+            <h2>HTTP GET vs POST Demos</h2>
+            <p>Interactive student demos covering GET query strings, URL route parameters (<code>/staff/23</code>), POST request body payloads, and the Post-Redirect-Get (PRG) pattern.</p>
+            <a asp-page="/HttpDemo/Index" class="btn btn-primary">Explore HTTP Demos &rarr;</a>
+        </div>
+
+        <div class="demo-card">
+            <h2>Cookies &amp; Session Demos</h2>
+            <p>Interactive student demos for client-side HTTP Cookies vs server-side ASP.NET Core Session state. Features dynamic UI theme switching (Light, Dark, Sepia, Ocean).</p>
+            <a asp-page="/StateDemo/Index" class="btn btn-primary">Explore Cookies &amp; Session &rarr;</a>
+        </div>
+    </div>
 </div>

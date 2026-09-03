@@ -1,0 +1,14 @@
+@page "{id:int}"
+@model MyRazorApp.Pages.CMS.EditModel
+@{
+    ViewData["Title"] = "Edit Staff Member";
+}
+
+<h1>Edit Staff Member</h1>
+<p>Update the details for staff record #@Model.Id.</p>
+
+<form method="post">
+    <partial name="_StaffForm" model="Model.Input" />
+    <button type="submit" class="btn btn-primary">Save changes</button>
+    <a asp-page="Index">Cancel</a>
+</form>
